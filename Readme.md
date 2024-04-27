@@ -8,69 +8,67 @@
 > | --------------- | -------- | --------- | ------------------------------------------------------------------ |
 > | email           | required | string    | User e-mail                                                        |
 > | password        | required | string    | User password                                                      |
-> | profileType     | required | enum      | HR or real user                                                    |
-> | profilePic      | optional | img       | User profile pic                                                   |
-> | phoneExt        | optional | number    | User phone ext                                                     |
+> | profileType     | required | enum      | Profile type: HR or real user                                      |
+> | profilePic      | optional | img       | User profile picture                                               |
+> | phoneExt        | optional | number    | User phone extension                                               |
 > | dni             | required | string    | User DNI (required if real user)                                   |
 > | position        | required | string    | User position (required if real user)                              |
-> | departmentId    | required | ObjectId  | User department id (required if real user)                         |
+> | departmentId    | required | ObjectId  | User department ID (required if real user)                         |
 > | bankAccount     | required | string    | User bank account (required if real user)                          |
-> | fullName        | required | string    | User Full name (required if real user)                             |
+> | fullName        | required | string    | User full name (required if real user)                             |
 > | studies         | required | string    | User studies (required if real user)                               |
 > | birthDate       | required | Date      | User birth date (required if real user)                            |
-> | address         | optional | string    | User address (required if real user)                               |
+> | address         | optional | string    | User address (optional, required if real user)                     |
 > | phoneNumber     | required | number    | User phone number (required if real user)                          |
-> | personalMail    | optional | string    | User personal mail (required if real user)                         |
-> | status          | required | enum      | User status (required if real user): (Sick leave, working, former) |
-> | removedAt       | required | enum      | Removal date for soft-delete                                       |
+> | personalMail    | optional | string    | User personal mail (optional, required if real user)               |
+> | status          | required | enum      | User status (required if real user): Sick leave, Working, Former   |
+> | removedAt       | optional | Date      | Removal date for soft-delete (optional)                            |
 
 ### Department
 
-> | name            | type      | data type | description                  |
-> | --------------- | --------- | --------- | ---------------------------- |
-> | departmentName  | required  | string    | N/A                          |
-> | removedAt       | optional  | enum      | Removal date for soft-delete |
-
+> | name            | type     | data type | description                  |
+> | --------------- | -------- | --------- | ---------------------------- |
+> | departmentName  | required | string    | Name of the department       |
+> | removedAt       | optional | Date      | Removal date for soft-delete |
 
 ### Goals
 
 > | name             | type      | data type | description                  |
 > | ---------------- | --------- | --------- | ---------------------------- |
-> | goalDescription  | required  | string    | N/A                          |
-> | employeeId       | required  | ObjectId  | N/A                          |
-> | removedAt        | optional  | enum      | Removal date for soft-delete |
-
+> | goalDescription  | required  | string    | Description of the goal      |
+> | employeeId       | required  | ObjectId  | Employee ID associated with the goal |
+> | removedAt        | optional  | Date      | Removal date for soft-delete |
 
 ### Goal tasks
 
 > | name             | type      | data type | description                  |
 > | ---------------- | --------- | --------- | ---------------------------- |
-> | goalId           | required  | ObjectId  | N/A                          |
-> | taskDescription  | required  | string    | N/A                          | 
-> | taskStatus       | required  | enum      | Done /Not done               |
-> | removedAt        | required  | enum      | Removal date for soft-delete |
+> | goalId           | required  | ObjectId  | Goal ID associated with the task |
+> | taskDescription  | required  | string    | Description of the task      |
+> | taskStatus       | required  | enum      | Status of the task: Done or Not Done |
+> | removedAt        | optional  | Date      | Removal date for soft-delete |
 
 ### Absence period
 
 > | name             | type      | data type | description                  |
-> | ---------------- | --------- | --------- | -----------                  |
-> | employeeId       | required  | ObjectId  | N/A                          |
-> | startDate        | required  | date      | Done /Not done               |
-> | endDate          | required  | date      | Done /Not done               |
-> | country          | required  | enum      | Done /Not done               |
-> | absenceReason    | required  | enum      | Done /Not done               |
-> | removedAt        | required  | enum      | Removal date for soft-delete |
+> | ---------------- | --------- | --------- | ---------------------------- |
+> | employeeId       | required  | ObjectId  | Employee ID for the absence record |
+> | startDate        | required  | Date      | Start date of the absence    |
+> | endDate          | required  | Date      | End date of the absence      |
+> | country          | required  | string    | Country of absence           |
+> | absenceReason    | required  | enum      | Reason for absence: Medical, Personal, etc. |
+> | removedAt        | optional  | Date      | Removal date for soft-delete |
 
 ### Spends
 
 > | name             | type      | data type | description                  |
-> | ----             | ----      | --------- | ---------------------------- |
-> | employeeId       | required  | ObjectId  | N/A                          |
-> | travelId         | required  | ObjectId  | N/A                          |
-> | date             | required  | date      | Done /Not done               |
-> | paymentMethod    | required  | enum      | Done /Not done               |
-> | creditCardEnd    | required  | enum      | Done /Not done               |
-> | spendType        | required  | enum      | Done /Not done               |
+> | ---------------- | --------- | --------- | ---------------------------- |
+> | employeeId       | required  | ObjectId  | Employee ID associated with the spend |
+> | travelId         | required  | ObjectId  | Associated travel ID        |
+> | date             | required  | Date      | Date of the spend           |
+> | paymentMethod    | required  | enum      | Payment method used         |
+> | creditCardEnd    | required  | string    | Last four digits of the credit card used |
+> | spendType        | required  | enum      | Type of spend: Travel, Food, Accommodation |
 
 ## Endpoints
 
