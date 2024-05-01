@@ -11,16 +11,15 @@ const userSchema = new Schema({
       required: true
   },
   profileType: {
+      enum: ["HR", "Employee"],
       type: String,
       required: true
   },
   profilePic: {
       type: String,
-      required: true
   },
   phoneExt: {
       type: String,
-      required: true
   },
   dni: {
       type: String,
@@ -28,67 +27,43 @@ const userSchema = new Schema({
   },
   position: {
       type: String,
-      required: function() {
-          return this.profileType !== "HR";
-      }
   },
   departmentId: {
-      type: Schema.Types.ObjectId,
-      required: function() {
-          return this.profileType !== "HR";
-      }
+      type: String,
   },
   bankAccount: {
       type: String,
-      required: function() {
-          return this.profileType !== "HR";
-      }
   },
-  fullName: {
+  name: {
       type: String,
-      required: function() {
-          return this.profileType !== "HR";
-      }
+      required: true
+  },
+  surname: {
+    type: String,
+    required: true
   },
   studies: {
       type: String,
-      required: function() {
-          return this.profileType !== "HR";
-      }
   },
   birthDate: {
       type: Date,
-      required: function() {
-          return this.profileType !== "HR";
-      }
   },
   address: {
       type: String,
-      required: function() {
-          return this.profileType !== "HR";
-      }
   },
   phoneNumber: {
       type: Number,
-      required: function() {
-          return this.profileType !== "HR";
-      }
   },
   personalMail: {
       type: String,
-      required: function() {
-          return this.profileType !== "HR";
-      }
   },
   status: {
       type: String,
       enum: ["Sick leave", "Working", "Former"],
-      required: function() {
-          return this.profileType !== "HR";
-      }
   },
   removedAt: Date
-});
+}, {timestamps: true});
+
   const userModel = mongoose.model("userModel", userSchema);
    
   module.exports = userModel
