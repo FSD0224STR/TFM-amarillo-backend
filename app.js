@@ -20,12 +20,8 @@ async function main() {
 }
 main().catch(err => console.log(err));
 
-
-
 const { userRouter } = require("./routes/userRoutes");
 app.use('/user', userRouter)
-
-
 
 const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
