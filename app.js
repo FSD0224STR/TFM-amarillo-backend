@@ -24,7 +24,7 @@ main().catch(err => console.log(err));
 
 
 const { userRouter } = require("./routes/userRoutes");
-app.use('/user', userRouter)
+app.use('/users', userRouter)
 
 
 

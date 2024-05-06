@@ -34,13 +34,9 @@ const userSchema = new Schema({
   bankAccount: {
       type: String,
   },
-  name: {
+  fullName: {
       type: String,
       required: true
-  },
-  surname: {
-    type: String,
-    required: true
   },
   studies: {
       type: String,
