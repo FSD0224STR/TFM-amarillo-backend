@@ -31,7 +31,9 @@ const userSchema = new Schema({
         type: String,
     },
     departmentId: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'departmentModel',
+        required: true,
     },
     bankAccount: {
         type: String,
@@ -62,6 +64,11 @@ const userSchema = new Schema({
     status: {
         type: String,
         enum: ["Sick leave", "Working", "Former"],
+    },
+    companyId: {
+        type: Schema.Types.ObjectId,
+        ref: 'companyModel',
+        required: true,
     },
     removedAt: Date
     }, {timestamps: true});

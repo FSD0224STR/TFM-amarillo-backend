@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const expenseSchema = new Schema({
     absenceId: {
         type: Schema.Types.ObjectId,
-        ref: 'Absence',
+        ref: 'absenceModel',
         required: true,
     },
     expenseDate: {
@@ -25,9 +25,9 @@ const expenseSchema = new Schema({
         required: true
     },
     removedAt: Date,
-    timestamps: true
-    
-});
+    },
+    {timestamps: true}
+);
 
 const expenseModel = mongoose.model("expenseModel", expenseSchema);
     

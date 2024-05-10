@@ -4,10 +4,10 @@ const { authenticatedToken, isHr } = require('../controllers/userController')
 
 const absenceRouter = Router()
 
-absenceRouter.get("/", authenticatedToken, getAbsences)
-absenceRouter.get("/:id?", authenticatedToken, getAbsenceById)
-absenceRouter.put("/:id?", authenticatedToken, updateAbsence)
-absenceRouter.post("/", authenticatedToken, addAbsence)
-absenceRouter.delete("/:id?", authenticatedToken, isHr, deleteAbsence)
+absenceRouter.get("/", getAbsences)
+absenceRouter.get("/:id?", getAbsenceById)
+absenceRouter.put("/:id?", updateAbsence)
+absenceRouter.post("/", addAbsence)
+absenceRouter.delete("/:id?", isHr, deleteAbsence)
 
 module.exports = { absenceRouter }

@@ -9,7 +9,7 @@ const expenseSchema = new Schema({
     },
     employeeId: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'userModel',
         required: true,
     },
     startDate: {
@@ -27,10 +27,10 @@ const expenseSchema = new Schema({
         type: String,
     },
     removedAt: Date,
-    timestamps: true
-    
-});
+    },
+    {timestamps: true}
+);
 
-const expenseModel = mongoose.model("expenseModel", expenseSchema);
+const expenseModel = mongoose.model("absenceModel", expenseSchema);
     
 module.exports = expenseModel
