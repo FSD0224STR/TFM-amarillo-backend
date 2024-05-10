@@ -45,7 +45,7 @@ const checkUser = async (req, res) => {
                 profileType: userChecked.profileType
             }, myTokenSecret, {expiresIn: '1h'}) 
             console.log("token: ", token)
-            return res.status(200).json({msg: 'Successful log in', token: token})}
+            return res.status(200).json(token)}
         return res.status(404).json({msg: "Not logged in. Please, check your password"})
     } catch (error) {
         res.status(400).json({msg: "You missed some parameter", error: error.message})
