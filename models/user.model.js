@@ -63,7 +63,11 @@ const userSchema = new Schema({
         type: String,
         enum: ["Sick leave", "Working", "Former"],
     },
-    removedAt: Date
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    removedAt: Date,
     }, {timestamps: true});
 
 const userModel = mongoose.model("userModel", userSchema);

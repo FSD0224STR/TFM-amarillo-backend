@@ -11,5 +11,3 @@ userRouter.post("/login", checkUser)
 userRouter.delete("/:id?", authenticatedToken, isHr, deleteUser)
 
 module.exports = { userRouter }
-
-//authenticatedToken, isHr

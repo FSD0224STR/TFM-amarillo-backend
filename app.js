@@ -21,7 +21,10 @@ async function main() {
 main().catch(err => console.log(err));
 
 const { userRouter } = require("./routes/userRoutes");
+const { viajesRouter } = require('./routes/viajesRouter');
+
 app.use('/user', userRouter)
+app.use('/viajes', viajesRouter)
 
 const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
