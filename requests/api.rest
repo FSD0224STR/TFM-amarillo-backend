@@ -1,0 +1,46 @@
+### Get all users
+
+GET http://localhost:3000/users
+
+### Edit user
+
+PUT http://localhost:3000/users/662fdb12c30dc90298a6eccb HTTP/1.1
+content-type: application/json
+
+{
+  "fullName": "Maria Gonzalez Perez"
+}
+
+### Delete user
+
+DELETE http://localhost:3000/users/662fdb12c30dc90298a6eccb
+
+
+### Create absence
+
+POST http://localhost:3000/absences HTTP/1.1
+content-type: application/json
+
+{
+  "absenceType": "Sick Leave",
+  "startDate": "2024-09-01Z",
+  "endDate": "2024-09-10Z",
+  "employeeId": "662fdce7383a23a9a1487286"
+}
+
+### Get absences
+
+GET http://localhost:3000/absences
+
+### Get absence by id
+
+GET http://localhost:3000/absences/663e55442c92e420159c9921
+
+### Edit absence
+
+PUT http://localhost:3000/absences/663e55442c92e420159c9921 HTTP/1.1
+content-type: application/json
+
+{
+  "endDate": "2024-09-10Z"
+}
