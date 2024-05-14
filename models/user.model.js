@@ -63,7 +63,7 @@ const userSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ["Sick leave", "Working", "Former"],
+        enum: ["Baja médica", "Alta", "Baja"],
     },
     companyId: {
         type: Schema.Types.ObjectId,
