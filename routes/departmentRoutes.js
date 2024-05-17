@@ -4,10 +4,10 @@ const { authenticatedToken, isHr } = require('../controllers/userController')
 
 const departmentRouter = Router()
 
-departmentRouter.get("/", getDepartments)
-departmentRouter.get("/:id?", getDepartmentById)
-departmentRouter.put("/:id?", updateDepartment)
-departmentRouter.post("/", addDepartment)
-departmentRouter.delete("/:id?", isHr, deleteDepartment)
+departmentRouter.get("/", authenticatedToken, getDepartments)
+departmentRouter.get("/:id?", authenticatedToken, getDepartmentById)
+departmentRouter.put("/:id?", authenticatedToken, updateDepartment)
+departmentRouter.post("/", authenticatedToken, addDepartment)
+departmentRouter.delete("/:id?", authenticatedToken, isHr, deleteDepartment)
 
 module.exports = { departmentRouter }

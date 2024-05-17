@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const expenseSchema = new Schema({
+const absenceSchema = new Schema({
     absenceType: {
-        enum: ["Business Travel", "Vacation", "Sick Leave"],
+        enum: ["Viaje de empresa", "Vacaciones", "Baja medica"],
         type: String,
         required: true
     },
@@ -31,6 +31,6 @@ const expenseSchema = new Schema({
     {timestamps: true}
 );
 
-const expenseModel = mongoose.model("absenceModel", expenseSchema);
+const absenceModel = mongoose.model("absenceModel", absenceSchema);
     
-module.exports = expenseModel
+module.exports = absenceModel
