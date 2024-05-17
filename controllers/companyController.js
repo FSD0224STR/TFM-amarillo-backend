@@ -36,7 +36,7 @@ const updateCompany = async (req, res) => {
 
 const deleteCompany = async (req, res) => {
     try {
-        await companyModel.findByIdAndUpdate(req.params.id, {deletedAt: new Date()})
+        await companyModel.findByIdAndUpdate(req.params.id, {removedAt: new Date()})
         res.status(200).json({ msg: "Company removed successfully" })
     } catch (error) {
         res.status(404).json({msg: "Company not found"})

@@ -36,7 +36,7 @@ const updateGoal = async (req, res) => {
 
 const deleteGoal = async (req, res) => {
     try {
-        await goalModel.findByIdAndUpdate(req.params.id, {deletedAt: new Date()})
+        await goalModel.findByIdAndUpdate(req.params.id, {removedAt: new Date()})
         res.status(200).json({ msg: "Goal removed successfully" })
     } catch (error) {
         res.status(404).json({msg: "Goal not found"})

@@ -36,7 +36,7 @@ const updateDepartment = async (req, res) => {
 
 const deleteDepartment = async (req, res) => {
     try {
-        await departmentModel.findByIdAndUpdate(req.params.id, {deletedAt: new Date()})
+        await departmentModel.findByIdAndUpdate(req.params.id, {removedAt: new Date()})
         res.status(200).json({ msg: "Department removed successfully" })
     } catch (error) {
         res.status(404).json({msg: "Department not found"})

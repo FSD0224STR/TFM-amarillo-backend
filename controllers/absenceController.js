@@ -36,7 +36,7 @@ const updateAbsence = async (req, res) => {
 
 const deleteAbsence = async (req, res) => {
     try {
-        await absenceModel.findByIdAndUpdate(req.params.id, {deletedAt: new Date()})
+        await absenceModel.findByIdAndUpdate(req.params.id, {removedAt: new Date()})
         res.status(200).json({ msg: "Absence removed successfully" })
     } catch (error) {
         res.status(404).json({msg: "User not found"})

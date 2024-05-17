@@ -79,7 +79,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const userDeleted = await userModel.findByIdAndDelete(req.params.id)
+        const userDeleted = await userModel.findByIdAndUpdate(req.params.id, {removedAt: new Date()})
         res.status(200).json({
             msg: "User removed successfully", 
             name: userDeleted.name, 
