@@ -63,7 +63,7 @@ const userSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ["Baja médica", "Alta", "Baja"],
+        enum: ["Baja medica", "Alta", "Baja"],
     },
     companyId: {
         type: Schema.Types.ObjectId,

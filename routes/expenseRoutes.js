@@ -4,10 +4,10 @@ const { authenticatedToken, isHr } = require('../controllers/userController')
 
 const expenseRouter = Router()
 
-expenseRouter.get("/", getExpenses)
-expenseRouter.get("/:id?", getExpenseById)
-expenseRouter.put("/:id?", updateExpense)
-expenseRouter.post("/", addExpense)
+expenseRouter.get("/", authenticatedToken, getExpenses)
+expenseRouter.get("/:id?", authenticatedToken, getExpenseById)
+expenseRouter.put("/:id?", authenticatedToken, updateExpense)
+expenseRouter.post("/", authenticatedToken, addExpense)
 expenseRouter.delete("/:id?", authenticatedToken, isHr, deleteExpense)
 
 module.exports = { expenseRouter }

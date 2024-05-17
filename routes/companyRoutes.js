@@ -4,10 +4,10 @@ const { authenticatedToken, isHr } = require('../controllers/userController')
 
 const companyRouter = Router()
 
-companyRouter.get("/", getCompanies)
-companyRouter.get("/:id?", getCompanyById)
-companyRouter.put("/:id?", updateCompany)
-companyRouter.post("/", addCompany)
-companyRouter.delete("/:id?", isHr, deleteCompany)
+companyRouter.get("/", authenticatedToken, getCompanies)
+companyRouter.get("/:id?", authenticatedToken, getCompanyById)
+companyRouter.put("/:id?", authenticatedToken, updateCompany)
+companyRouter.post("/", authenticatedToken, addCompany)
+companyRouter.delete("/:id?", authenticatedToken, isHr, deleteCompany)
 
 module.exports = { companyRouter }

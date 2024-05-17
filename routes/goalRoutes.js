@@ -4,10 +4,10 @@ const { authenticatedToken, isHr } = require('../controllers/userController')
 
 const goalRouter = Router()
 
-goalRouter.get("/", getGoals)
-goalRouter.get("/:id?", getGoalById)
-goalRouter.put("/:id?", updateGoal)
-goalRouter.post("/", addGoal)
-goalRouter.delete("/:id?", isHr, deleteGoal)
+goalRouter.get("/", authenticatedToken, getGoals)
+goalRouter.get("/:id?", authenticatedToken, getGoalById)
+goalRouter.put("/:id?", authenticatedToken, updateGoal)
+goalRouter.post("/", authenticatedToken, addGoal)
+goalRouter.delete("/:id?", authenticatedToken, isHr, deleteGoal)
 
 module.exports = { goalRouter }

@@ -4,10 +4,10 @@ const { authenticatedToken, isHr } = require('../controllers/userController')
 
 const taskRouter = Router()
 
-taskRouter.get("/", getTasks)
-taskRouter.get("/:id?", getTaskById)
-taskRouter.put("/:id?", updateTask)
-taskRouter.post("/", addTask)
-taskRouter.delete("/:id?", isHr, deleteTask)
+taskRouter.get("/", authenticatedToken, getTasks)
+taskRouter.get("/:id?", authenticatedToken, getTaskById)
+taskRouter.put("/:id?", authenticatedToken, updateTask)
+taskRouter.post("/", authenticatedToken, addTask)
+taskRouter.delete("/:id?", authenticatedToken, isHr, deleteTask)
 
 module.exports = { taskRouter }
