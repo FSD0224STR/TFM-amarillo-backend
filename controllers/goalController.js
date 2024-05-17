@@ -1,7 +1,7 @@
 const goalModel = require('../models/goal.model')
 
 const getGoals = async (req, res) => {
-    const goals = await goalModel.find()
+    const goals = await goalModel.find({removedAt: {$eq: null}})
     console.log("Goals found")
     res.status(200).json(goals)
 }

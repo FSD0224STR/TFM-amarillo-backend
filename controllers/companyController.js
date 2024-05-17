@@ -1,7 +1,7 @@
 const companyModel = require('../models/company.model')
 
 const getCompanies = async (req, res) => {
-    const companies = await companyModel.find()
+    const companies = await companyModel.find({removedAt: {$eq: null}})
     console.log("Companies found")
     res.status(200).json(companies)
 }

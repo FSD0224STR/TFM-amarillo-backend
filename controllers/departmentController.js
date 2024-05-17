@@ -1,7 +1,7 @@
 const departmentModel = require('../models/department.model')
 
 const getDepartments = async (req, res) => {
-    const departments = await departmentModel.find()
+    const departments = await departmentModel.find({removedAt: {$eq: null}})
     console.log("Departments found")
     res.status(200).json(departments)
 }

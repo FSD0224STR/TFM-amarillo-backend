@@ -1,7 +1,7 @@
 const absenceModel = require('../models/absence.model')
 
 const getAbsences = async (req, res) => {
-    const absences = await absenceModel.find()
+    const absences = await absenceModel.find({removedAt: {$eq: null}})
     console.log("Ausencias encontradas")
     res.status(200).json(absences)
 }

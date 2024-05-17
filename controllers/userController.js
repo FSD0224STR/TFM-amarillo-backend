@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const myTokenSecret = process.env.MYTOKENSECRET;
 
 const getUsers = async (req, res) => {
-    const users = await userModel.find()
+    const users = await userModel.find({removedAt: {$eq: null}})
     console.log("usuarios recogidos")
     res.status(200).json(users)
 }

@@ -1,7 +1,7 @@
 const taskModel = require('../models/task.model')
 
 const getTasks = async (req, res) => {
-    const tasks = await taskModel.find()
+    const tasks = await taskModel.find({removedAt: {$eq: null}})
     console.log("Tasks found")
     res.status(200).json(tasks)
 }

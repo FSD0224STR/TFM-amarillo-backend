@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const absenceSchema = new Schema({
-    absenceType: {
-        enum: ["Viaje de empresa", "Vacaciones", "Baja medica"],
-        type: String,
-        required: true
+    absenceCodeId: {
+        type: Schema.Types.ObjectId,
+        ref: 'absenceCodeModel',
+        required: true,
     },
     employeeId: {
         type: Schema.Types.ObjectId,
