@@ -1,3 +1,4 @@
+const absenceModel = require('../models/absence.model');
 const expenseModel = require('../models/expense.model');
 
 const jwt = require('jsonwebtoken');
