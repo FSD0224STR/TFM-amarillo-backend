@@ -20,9 +20,21 @@ const expenseSchema = new Schema({
         type: Number,
     },
     expenseType: {
-        enum: ["Travel", "Food", "Accommodation"],
+        enum: ["Traslados", "Dietas", "Hospedajes"],
         type: String,
         required: true
+    },
+    expenseEuros: {
+        type: Number,
+        required: true
+    },
+    expenseStatus: {
+        type: String,
+        enum: ["Pendiente", "Aprobada"],
+        required: true
+    },
+    expensePayment: {
+        type: Date,
     },
     removedAt: Date,
     },
