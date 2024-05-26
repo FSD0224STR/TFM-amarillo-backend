@@ -7,12 +7,11 @@ const absenceCodeSchema = new Schema({
         required: true
     },
     absenceService: {
-        enum: ["Demo", "Venta", "Post-venta", "Soporte", "Formacion", "Otros"],
+        enum: ["Demo", "Venta", "Post-venta", "Soporte", "Formacion", "Feria", "Otros"],
         type: String,
     },
     absenceCode: {
         type: String,
-        required: true
     },
     removedAt: Date,
     },

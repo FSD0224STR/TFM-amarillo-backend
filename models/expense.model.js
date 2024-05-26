@@ -19,18 +19,14 @@ const expenseSchema = new Schema({
     creditCardEnd: {
         type: Number,
     },
-    expenseType: {
-        enum: ["Traslados", "Dietas", "Hospedajes"],
-        type: String,
-        required: true
-    },
-    expenseEuros: {
-        type: Number,
-        required: true
+    expenseCodeId: {
+        type: Schema.Types.ObjectId,
+        ref: 'expenseCodeModel',
+        //required: true,
     },
     expenseStatus: {
         type: String,
-        enum: ["Pendiente", "Aprobada"],
+        enum: ["Pendiente", "Aprobado"],
         required: true
     },
     expensePayment: {
