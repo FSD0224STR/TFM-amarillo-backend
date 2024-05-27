@@ -3,9 +3,10 @@ const expenseModel = require('../models/expense.model')
 const getExpenses = async (req, res) => {
     const expenses = await expenseModel.find().populate({
         path: "absenceId",
-        populate: {
-            path: "employeeId",
-        },
+            populate: [
+                {path: "employeeId",}, 
+                {path: "absenceCodeId",}
+            ],
     })
     console.log("Ausencias encontradas")
     res.status(200).json(expenses)
