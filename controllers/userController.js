@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const myTokenSecret = process.env.MYTOKENSECRET;
 
 const getUsers = async (req, res) => {
-    const users = await userModel.find({removedAt: {$eq: null}})
+    const users = await userModel.find({removedAt: {$eq: null}}).populate({
+        path: "departmentId"})
     console.log("usuarios recogidos")
     res.status(200).json(users)
 }

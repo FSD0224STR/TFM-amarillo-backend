@@ -4,7 +4,9 @@ const getExpenses = async (req, res) => {
     const expenses = await expenseModel.find().populate({
         path: "absenceId",
             populate: [
-                {path: "employeeId",}, 
+                {path: "employeeId",
+                    populate: 
+                        {path: "departmentId",}}, 
                 {path: "absenceCodeId",}
             ],
     })

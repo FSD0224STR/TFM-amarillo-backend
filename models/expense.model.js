@@ -20,9 +20,8 @@ const expenseSchema = new Schema({
         type: Number,
     },
     expenseCodeId: {
-        type: Schema.Types.ObjectId,
-        ref: 'expenseCodeModel',
-        //required: true,
+        type: Array,
+        required: true,
     },
     expenseStatus: {
         type: String,

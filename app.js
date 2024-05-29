@@ -28,7 +28,6 @@ const { goalRouter } = require("./routes/goalRoutes");
 const { departmentRouter } = require("./routes/departmentRoutes");
 const { companyRouter } = require("./routes/companyRoutes");
 const { absenceCodeRouter } = require("./routes/absenceCodeRoutes");
-const { expenseCodeRouter } = require('./routes/expenseCodeRoutes');
 // const { requestsRouter } = require('./routes/requestsRouter');
 
 app.use('/users', userRouter)
@@ -39,7 +38,6 @@ app.use('/goals', goalRouter)
 app.use('/departments', departmentRouter)
 app.use('/companies', companyRouter)
 app.use('/absenceCodes', absenceCodeRouter)
-app.use('/expensesCodes', expenseCodeRouter)
 // app.use('/requests', requestsRouter)
 
 const server = app.listen(port, () => {

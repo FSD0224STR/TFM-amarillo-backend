@@ -68,7 +68,7 @@ const userSchema = new Schema({
     companyId: {
         type: Schema.Types.ObjectId,
         ref: 'companyModel',
-        required: true,
+        //required: true,
     },
     removedAt: Date
     }, {timestamps: true});
