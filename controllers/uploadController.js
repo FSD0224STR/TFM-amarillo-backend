@@ -30,7 +30,7 @@ const uploadProfileImage = async (req, res, user) => {
                 return res.status(404).json({ msg: "User not found" });
             }
             fs.unlinkSync(req.file.path)
-            res.status(200).json({msg: "User updated", url: result.url, req: req.user.id})
+            res.status(200).json({msg: "User updated", url: result.url})
         } catch(error) {
             fs.unlinkSync(req.file.path)
             res.status(500).json({ msg: "Error uploading or updating profile image", error: error.message })
