@@ -35,7 +35,7 @@ const addExpense = async (req, res) => {
 
 const updateExpense = async (req, res) => { 
     try {
-        await expenseModel.findByIdAndUpdate(req.params.id, {...req.body})
+        await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body})
         res.status(200).json({msg: "Expense updated"})
     } catch (error) {
         res.status(404).json({msg: "Expense not found"})
@@ -47,7 +47,7 @@ const deleteExpense = async (req, res) => {
         await expenseModel.findByIdAndUpdate(req.params.id, {removedAt: new Date()})
         res.status(200).json({ msg: "Expense removed successfully" })
     } catch (error) {
-        res.status(404).json({msg: "User not found"})
+        res.status(404).json({msg: "Expense not found"})
     }
 }
 
