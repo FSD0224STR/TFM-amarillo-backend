@@ -1,15 +1,16 @@
 require('dotenv').config()
-const express = require("express");
+const express = require('express')
 const cors = require('cors')
 const port = 3000;
-
 const app = express();
+
 
 app.use(cors(corsOptions));
 var corsOptions = { 
     origin: '*',
 }
 app.use(express.json());
+
 
 const mongoose = require("mongoose");
 const mongoDB = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@"+process.env.DB_SERVER + "/" + process.env.DB_NAME + "?retryWrites=true&w=majority";
@@ -20,14 +21,16 @@ async function main() {
 }
 main().catch(err => console.log(err));
 
-const { userRouter } = require("./routes/userRoutes");
-const { absenceRouter } = require("./routes/absenceRoutes");
-const { expenseRouter } = require("./routes/expenseRoutes");
-const { taskRouter } = require("./routes/taskRoutes");
-const { goalRouter } = require("./routes/goalRoutes");
-const { departmentRouter } = require("./routes/departmentRoutes");
-const { companyRouter } = require("./routes/companyRoutes");
-const { absenceCodeRouter } = require("./routes/absenceCodeRoutes");
+
+const { userRouter } = require("./routes/userRoutes")
+const { absenceRouter } = require("./routes/absenceRoutes")
+const { expenseRouter } = require("./routes/expenseRoutes")
+const { taskRouter } = require("./routes/taskRoutes")
+const { goalRouter } = require("./routes/goalRoutes")
+const { departmentRouter } = require("./routes/departmentRoutes")
+const { companyRouter } = require("./routes/companyRoutes")
+const { absenceCodeRouter } = require("./routes/absenceCodeRoutes")
+const { uploadRouter } = require("./routes/uploadRoutes") 
 // const { requestsRouter } = require('./routes/requestsRouter');
 
 app.use('/users', userRouter)
@@ -38,6 +41,7 @@ app.use('/goals', goalRouter)
 app.use('/departments', departmentRouter)
 app.use('/companies', companyRouter)
 app.use('/absenceCodes', absenceCodeRouter)
+app.use('/upload', uploadRouter)
 // app.use('/requests', requestsRouter)
 
 const server = app.listen(port, () => {
