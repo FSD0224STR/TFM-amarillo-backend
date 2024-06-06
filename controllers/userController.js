@@ -36,7 +36,7 @@ const checkUser = async (req, res) => {
     const {email, password} = req.body
     try {
         const userChecked = await userModel.findOne({email: email}) //verificamos si el email existe en nuestra BD
-        if (!userChecked) return res.status(404).json({msg: "Email not found"})
+        if (!userChecked) return res.status(404).json({msg: "No estas registrado con este correo"})
         const passwordChecked = await bcrypt.compare(req.body.password, userChecked.password) // si existe email, verificamos si la contraseña es correcta
         if (passwordChecked) { //generamos token de ingreso
             const token = jwt.sign({
@@ -47,7 +47,7 @@ const checkUser = async (req, res) => {
             }, myTokenSecret, {expiresIn: '1h'}) 
             console.log("token: ", token)
             return res.status(200).json(token)}
-        return res.status(404).json({msg: "Not logged in. Please, check your password"})
+        return res.status(404).json({msg: "Contraseña incorrecta"})
     } catch (error) {
         res.status(400).json({msg: "You missed some parameter", error: error.message})
     }
