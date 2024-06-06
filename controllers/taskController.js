@@ -1,7 +1,13 @@
 const taskModel = require('../models/task.model')
 
 const getTasks = async (req, res) => {
-    const tasks = await taskModel.find({removedAt: {$eq: null}})
+    const tasks = await taskModel.find({removedAt: {$eq: null}}).populate({
+        path: "goalId",
+            populate: [
+                {path: "employeeId"},                
+            ],
+        })
+        
     console.log("Tasks found")
     res.status(200).json(tasks)
 }

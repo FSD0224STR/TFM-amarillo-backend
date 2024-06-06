@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const goalSchema = new Schema({
     employeeId: {
         type: Schema.Types.ObjectId,
-        ref: 'employeeModel',
+        ref: 'userModel',
         required: true,
     },
     goalName: {
