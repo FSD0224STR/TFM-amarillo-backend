@@ -71,8 +71,15 @@ const isHr = (req, res, next) => { //middleware que verifica si el tipo de perfi
 
 const updateUser = async (req, res) => { 
     try {
-        const data = await userModel.findByIdAndUpdate(req.params.id, {...req.body})
-        res.status(200).json({msg: "User updated"})
+        if (req.body.password) {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10)
+            const data = await userModel.findByIdAndUpdate(req.params.id, {...req.body,  password: hashedPassword})
+            res.status(200).json({msg: "User updated"})
+        }
+        else{
+            const data = await userModel.findByIdAndUpdate(req.params.id, {...req.body})
+            res.status(200).json({msg: "User updated"})
+        }
     } catch (error) {
         res.status(404).json({msg: "User not found"})
     }
