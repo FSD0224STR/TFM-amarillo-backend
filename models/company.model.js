@@ -9,8 +9,21 @@ const companySchema = new Schema({
     companyAddress: {
         type: String
     },
-    companyPhone: {
+    companyPostalCode: {
+        type: Number
+    },
+    companyCity: {
         type: String
+    },
+    companyCountry: {
+        type: String
+    },
+    companyPhone: {
+        type: Number
+    },
+    companyPlan: {
+        type: String,
+        enum: ["Small", "Medium", "Large"],
     },
     removedAt: Date,
     },
