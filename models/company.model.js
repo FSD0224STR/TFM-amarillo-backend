@@ -25,6 +25,9 @@ const companySchema = new Schema({
         type: String,
         enum: ["Small", "Medium", "Large"],
     },
+    companyLogo: {
+        type: String,
+    },
     removedAt: Date,
     },
     {timestamps: true}
