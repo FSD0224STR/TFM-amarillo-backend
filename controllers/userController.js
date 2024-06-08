@@ -5,15 +5,29 @@ const jwt = require('jsonwebtoken');
 const myTokenSecret = process.env.MYTOKENSECRET;
 
 const getUsers = async (req, res) => {
-    const users = await userModel.find({removedAt: {$eq: null}}).populate({
-        path: "departmentId"})
-    console.log("usuarios recogidos")
-    res.status(200).json(users)
-}
+    try {
+      const users = await userModel.find({ removedAt: { $eq: null } }).populate([
+        { path: "departmentId", select: '_id departmentName'},
+        { path: "companyId", select: '_id companyName' }
+      ])
+      const sanitizedUsers = users.map(user => {
+        const userObject = user.toObject()
+        delete userObject.password
+        return userObject
+      })
+      res.status(200).json(sanitizedUsers)
+    } catch (error) {
+      console.error("Error al obtener los usuarios:", error)
+      res.status(500).json({ message: "Error al obtener los usuarios" })
+    }
+  }
 
 const getUserId = async (req, res) => {
     try {
-        const data = await userModel.findById(req.params.id);
+        const data = await userModel.findById(req.params.id).populate([
+            { path: "departmentId", select: '_id departmentName'},
+            { path: "companyId", select: '_id companyName' }
+          ])
         res.status(200).json(data)
     } catch (error) {
         res.status(404).json({msg: "User not found"})
