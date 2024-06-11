@@ -28,9 +28,15 @@ const getUserId = async (req, res) => {
             { path: "departmentId", select: '_id departmentName'},
             { path: "companyId", select: '_id companyName' }
           ])
-        res.status(200).json(data)
+          if (data) {
+            const userData = data.toJSON()
+            delete userData.password
+            res.status(200).json(userData)
+            } else {
+                res.status(404).json({msg: "User not foud"})
+            }
     } catch (error) {
-        res.status(404).json({msg: "User not found"})
+        res.status(500).json({msg: error})
     }
 }
 
