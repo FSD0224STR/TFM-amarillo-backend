@@ -57,6 +57,7 @@ const checkUser = async (req, res) => {
     try {
         const userChecked = await userModel.findOne({email: email}) //verificamos si el email existe en nuestra BD
         if (!userChecked) return res.status(404).json({msg: "No estas registrado con este correo"})
+        if(userChecked.removedAt) return res.status(404).json({msg: "Tu correo ya no esta activo."})
         const passwordChecked = await bcrypt.compare(req.body.password, userChecked.password) // si existe email, verificamos si la contraseña es correcta
         if (passwordChecked) { //generamos token de ingreso
             const token = jwt.sign({
