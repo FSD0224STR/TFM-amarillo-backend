@@ -7,8 +7,8 @@ const expenseSchema = new Schema({
         ref: 'absenceModel',
         required: true,
     },
-    expenseDate: {
-        type: Date,
+    expenseTitle: {
+        type: String,
         required: true
     },
     paymentMethod: {
