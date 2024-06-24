@@ -13,6 +13,18 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+const emailSent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Esto es una prueba de envío correo de confirmación de fecha de pago en gastos</h1>
+</body>
+</html>`
+
 const getExpenses = async (req, res) => {
     const expenses = await expenseModel.find().populate({
         path: "absenceId",
@@ -48,6 +60,20 @@ const addExpense = async (req, res) => {
 
 const updateExpense = async (req, res) => { 
     try {
+        const email = {
+            from:"fsd24amarillo@gmail.com",
+            to: req.user.email,
+            subject: "Confirmación de fecha de pago",
+            //text: "Hemos recibido tu gasto",
+            html: emailSent
+        };
+        transporter.sendMail(email, function(error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Email sent: " + info.response);
+            }
+        })
         await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body})
         res.status(200).json({msg: "Expense updated"})
     } catch (error) {

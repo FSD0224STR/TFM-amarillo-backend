@@ -20,15 +20,15 @@ const getUsers = async (req, res) => {
       console.error("Error al obtener los usuarios:", error)
       res.status(500).json({ message: "Error al obtener los usuarios" })
     }
-  }
+}
 
 const getUserId = async (req, res) => {
     try {
         const data = await userModel.findById(req.params.id).populate([
             { path: "departmentId", select: '_id departmentName'},
             { path: "companyId", select: '_id companyName' }
-          ])
-          if (data) {
+        ])
+            if (data) {
             const userData = data.toJSON()
             delete userData.password
             res.status(200).json(userData)
@@ -64,7 +64,8 @@ const checkUser = async (req, res) => {
                 id: userChecked._id, 
                 name: userChecked.name, 
                 surname: userChecked.surname, 
-                profileType: userChecked.profileType
+                profileType: userChecked.profileType,
+                email: userChecked.email
             }, myTokenSecret, {expiresIn: '1h'}) 
             console.log("token: ", token)
             return res.status(200).json(token)}
