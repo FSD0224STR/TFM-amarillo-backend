@@ -42,31 +42,59 @@ const getUserId = async (req, res) => {
 }
 
 const addUser = async (req, res) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10) // encryptamos contraseña creada
-    console.log("hashedPassword: ", hashedPassword)
     try {
-        const newUser = await userModel.create({...req.body, password: hashedPassword})
-        console.log("usuario nuevo: ", newUser)
-        
-        const email = {
-            from: 'fsd24amarillo@gmail.com',
-            to: newUser.email,
-            subject: "Bienvenido a BudgetWise",
-            text: "Hello"
+      const { email } = req.body;
+      const userChecked = await userModel.findOne({ email });
+  
+      if (userChecked && userChecked.removedAt) {
+        const updatedData = { ...req.body, removedAt: null };
+        if (req.body.password) {
+          updatedData.password = await bcrypt.hash(req.body.password, 10);
         }
-        transporter.sendMail(email, function(error, info) {
-            if(error) {
-                console.log(error)
-            } else {
-                console.log("Email sent: " + info.response)
-            }
-        })
-
-        res.status(201).json({msg: "User created", newUser})
+        const restoredUser = await userModel.findByIdAndUpdate(userChecked._id, updatedData, { new: true });
+  
+        const email = {
+          from: 'fsd24amarillo@gmail.com',
+          to: restoredUser.email,
+          subject: "Bienvenido de nuevo a BudgetWise",
+          text: "Te damos la bienvenida a la applicacion de gestión de gastos",
+        };
+        transporter.sendMail(email, function (error, info) {
+          if (error) {
+            console.log('Email error ' + error);
+          } else {
+            console.log("Email sent: " + info.response);
+          }
+        });
+  
+        res.status(200).json({ msg: "User restored and updated", restoredUser });
+      } else {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        const newUser = await userModel.create({ ...req.body, password: hashedPassword });
+ 
+        const email = {
+          from: 'fsd24amarillo@gmail.com',
+          to: newUser.email,
+          subject: "Bienvenido de nuevo a BudgetWise",
+          text: "Te damos la bienvenida a la applicacion de gestión de gastos",
+        };
+        transporter.sendMail(email, function (error, info) {
+          if (error) {
+            console.log('Email error ' + error);
+          } else {
+            console.log("Email sent: " + info.response);
+          }
+        });
+  
+        res.status(201).json({ msg: "User created", newUser });
+      }
     } catch (error) {
-        res.status(400).json({msg: "You missed some parameter", error: error.message})
+      res.status(400).json({ msg: "You missed some parameter", error: error.message });
     }
-}
+  };
+  
+  module.exports = addUser;
+  
 
 const checkUser = async (req, res) => {
     const {email, password} = req.body
