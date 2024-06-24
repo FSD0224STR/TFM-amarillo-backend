@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const transporter = require('../transporter')
 
 const myTokenSecret = process.env.MYTOKENSECRET;
 
@@ -46,6 +47,21 @@ const addUser = async (req, res) => {
     try {
         const newUser = await userModel.create({...req.body, password: hashedPassword})
         console.log("usuario nuevo: ", newUser)
+        
+        const email = {
+            from: 'fsd24amarillo@gmail.com',
+            to: newUser.email,
+            subject: "Bienvenido a BudgetWise",
+            text: "Hello"
+        }
+        transporter.sendMail(email, function(error, info) {
+            if(error) {
+                console.log(error)
+            } else {
+                console.log("Email sent: " + info.response)
+            }
+        })
+
         res.status(201).json({msg: "User created", newUser})
     } catch (error) {
         res.status(400).json({msg: "You missed some parameter", error: error.message})
