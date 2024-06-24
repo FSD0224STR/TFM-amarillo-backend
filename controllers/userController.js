@@ -3,7 +3,23 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const transporter = require('../transporter')
 
-const myTokenSecret = process.env.MYTOKENSECRET;
+const myTokenSecret = process.env.MYTOKENSECRET
+
+const emailSent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Gracias por registrarte a BudgetWise</h1>
+    <p>Para iniciar sesión utiliza tu correo electrónico y la contraseña <strong>perro123</strong></p>
+    <p>¡Accede a tu perfil y cambia la contraseña!</p>
+    <a href="https://tfm-amarillo-frontend.netlify.app/login">¡Entra ya!</a>
+</body>
+</html>
+`
 
 const getUsers = async (req, res) => {
     try {
@@ -42,31 +58,59 @@ const getUserId = async (req, res) => {
 }
 
 const addUser = async (req, res) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10) // encryptamos contraseña creada
-    console.log("hashedPassword: ", hashedPassword)
     try {
-        const newUser = await userModel.create({...req.body, password: hashedPassword})
-        console.log("usuario nuevo: ", newUser)
-        
-        const email = {
-            from: 'fsd24amarillo@gmail.com',
-            to: newUser.email,
-            subject: "Bienvenido a BudgetWise",
-            text: "Hello"
+      const { email } = req.body;
+      const userChecked = await userModel.findOne({ email });
+  
+      if (userChecked && userChecked.removedAt) {
+        const updatedData = { ...req.body, removedAt: null };
+        if (req.body.password) {
+          updatedData.password = await bcrypt.hash(req.body.password, 10);
         }
-        transporter.sendMail(email, function(error, info) {
-            if(error) {
-                console.log(error)
-            } else {
-                console.log("Email sent: " + info.response)
-            }
-        })
-
-        res.status(201).json({msg: "User created", newUser})
+        const restoredUser = await userModel.findByIdAndUpdate(userChecked._id, updatedData, { new: true });
+  
+        const email = {
+          from: 'fsd24amarillo@gmail.com',
+          to: restoredUser.email,
+          subject: "Bienvenido de nuevo a BudgetWise",
+          html: emailSent,
+        };
+        transporter.sendMail(email, function (error, info) {
+          if (error) {
+            console.log('Email error ' + error);
+          } else {
+            console.log("Email sent: " + info.response);
+          }
+        });
+  
+        res.status(200).json({ msg: "User restored and updated", restoredUser });
+      } else {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        const newUser = await userModel.create({ ...req.body, password: hashedPassword });
+ 
+        const email = {
+          from: 'fsd24amarillo@gmail.com',
+          to: newUser.email,
+          subject: "Bienvenido de nuevo a BudgetWise",
+          html: emailSent,
+        };
+        transporter.sendMail(email, function (error, info) {
+          if (error) {
+            console.log('Email error ' + error);
+          } else {
+            console.log("Email sent: " + info.response);
+          }
+        });
+  
+        res.status(201).json({ msg: "User created", newUser });
+      }
     } catch (error) {
-        res.status(400).json({msg: "You missed some parameter", error: error.message})
+      res.status(400).json({ msg: "You missed some parameter", error: error.message });
     }
-}
+  };
+  
+  module.exports = addUser;
+  
 
 const checkUser = async (req, res) => {
     const {email, password} = req.body
