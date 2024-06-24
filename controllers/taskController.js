@@ -1,10 +1,39 @@
 const taskModel = require('../models/task.model')
 
 const getTasks = async (req, res) => {
-    const tasks = await taskModel.find({removedAt: {$eq: null}})
+    const tasks = await taskModel.find({removedAt: {$eq: null}}).populate({
+        path: "goalId",
+            populate: [
+                {path: "employeeId"},                
+            ],
+        })
+        
     console.log("Tasks found")
     res.status(200).json(tasks)
 }
+
+const getTasksByUser = async (req, res) => {
+    const employeeId = req.params.employeeId; // or req.query.employeeId if you are using query parameters
+
+    try {
+        const tasks = await taskModel.find({ removedAt: { $eq: null } })
+            .populate({
+                path: "goalId",
+                populate: {
+                    path: "employeeId",
+                    match: { _id: employeeId } // filter based on employeeId
+                }
+            });
+
+        const filteredTasks = tasks.filter(task => task.goalId.employeeId);
+
+        console.log("Tasks found for employee:", employeeId);
+        res.status(200).json(filteredTasks);
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        res.status(500).json({ error: "An error occurred while fetching tasks" });
+    }
+};
 
 const getTaskById = async (req, res) => {
     try {
@@ -48,5 +77,6 @@ module.exports = {
     getTaskById, 
     addTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    getTasksByUser
 }  
