@@ -1,17 +1,6 @@
 const expenseModel = require('../models/expense.model')
+const transporter = require('../transporter')
 
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: "fsd24amarillo@gmail.com",
-        pass: process.env.EMAIL_APP_PASSWORD,
-    },
-});
 
 const getExpenses = async (req, res) => {
     const expenses = await expenseModel.find().populate({
