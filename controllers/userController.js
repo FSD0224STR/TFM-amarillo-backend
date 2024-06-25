@@ -1,25 +1,12 @@
 const userModel = require('../models/user.model')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
 const transporter = require('../transporter')
+const loginEmail = require('../emails/loginEmail')
 
 const myTokenSecret = process.env.MYTOKENSECRET
 
-const emailSent = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Gracias por registrarte a BudgetWise</h1>
-    <p>Para iniciar sesión utiliza tu correo electrónico y la contraseña <strong>perro123</strong></p>
-    <p>¡Accede a tu perfil y cambia la contraseña!</p>
-    <a href="https://tfm-amarillo-frontend.netlify.app/login">¡Entra ya!</a>
-</body>
-</html>
-`
 
 const getUsers = async (req, res) => {
     try {
@@ -73,7 +60,7 @@ const addUser = async (req, res) => {
           from: 'fsd24amarillo@gmail.com',
           to: restoredUser.email,
           subject: "Bienvenido de nuevo a BudgetWise",
-          html: emailSent,
+          html: loginEmail,
         };
         transporter.sendMail(email, function (error, info) {
           if (error) {
@@ -92,7 +79,7 @@ const addUser = async (req, res) => {
           from: 'fsd24amarillo@gmail.com',
           to: newUser.email,
           subject: "Bienvenido de nuevo a BudgetWise",
-          html: emailSent,
+          html: loginEmail,
         };
         transporter.sendMail(email, function (error, info) {
           if (error) {
