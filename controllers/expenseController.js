@@ -1,4 +1,5 @@
 const expenseModel = require('../models/expense.model')
+const userModel = require('../models/user.model')
 const transporter = require('../transporter')
 
 const emailSent = `<!DOCTYPE html>
@@ -23,7 +24,7 @@ const getExpenses = async (req, res) => {
                 {path: "absenceCodeId",}
             ],
     })
-    console.log("Ausencias encontradas")
+    console.log("Gastos obtenidos")
     res.status(200).json(expenses)
 }
 
@@ -39,7 +40,7 @@ const getExpenseById = async (req, res) => {
 const addExpense = async (req, res) => {
     try {
         const newExpense = await expenseModel.create({...req.body})
-        console.log("Nueva ausencia: ", newExpense)
+        console.log("Nuevos gasto: ", newExpense)
         res.status(201).json({msg: "Expense created", newExpense})
     } catch (error) {
         res.status(400).json({msg: "You missed some parameter", error: error.message})
@@ -48,10 +49,15 @@ const addExpense = async (req, res) => {
 
 const updateExpense = async (req, res) => { 
     try {
-        const data = await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body})
+        const data = await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body}).populate({
+            path: 'absenceId',
+            populate: {
+                path: 'employeeId'
+            }
+        })
         const email = {
             from: "fsd24amarillo@gmail.com",
-            to: req.user.email,
+            to: data.absenceId.employeeId.email,
             subject: "Confirmación de fecha de pago",
             //text: "Hemos recibido tu gasto",
             html: emailSent
