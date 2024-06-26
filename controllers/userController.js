@@ -47,7 +47,8 @@ const getUserId = async (req, res) => {
 const addUser = async (req, res) => {
     try {
       const { email } = req.body;
-      const userChecked = await userModel.findOne({ email });
+      const userChecked = await userModel.findOne({ email })
+      const loginEmailwithData = loginEmail(userChecked.email, 'perro123', userChecked._id)
   
       if (userChecked && userChecked.removedAt) {
         const updatedData = { ...req.body, removedAt: null };
@@ -60,7 +61,7 @@ const addUser = async (req, res) => {
           from: 'fsd24amarillo@gmail.com',
           to: restoredUser.email,
           subject: "Bienvenido de nuevo a BudgetWise",
-          html: loginEmail,
+          html: loginEmailwithData,
         };
         transporter.sendMail(email, function (error, info) {
           if (error) {
@@ -79,7 +80,7 @@ const addUser = async (req, res) => {
           from: 'fsd24amarillo@gmail.com',
           to: newUser.email,
           subject: "Bienvenido de nuevo a BudgetWise",
-          html: loginEmail,
+          html: loginEmailwithData,
         };
         transporter.sendMail(email, function (error, info) {
           if (error) {
@@ -94,17 +95,23 @@ const addUser = async (req, res) => {
     } catch (error) {
       res.status(400).json({ msg: "You missed some parameter", error: error.message });
     }
-  };
+  }
   
-  module.exports = addUser;
-  
+const confirmUser = async (req, res) => {
+    const userFound = await userModel.findById(req.params.id)
+    if (!userFound) return res.status(404).json('No existe ese usuario')
+    userFound.confirmed = true
+    await userFound.save()
+    res.json('usuario confirmado')
+}
 
 const checkUser = async (req, res) => {
     const {email, password} = req.body
     try {
-        const userChecked = await userModel.findOne({email: email}) //verificamos si el email existe en nuestra BD
+        const userChecked = await userModel.findOne({email: email})
         if (!userChecked) return res.status(404).json({msg: "No estas registrado con este correo"})
         if(userChecked.removedAt) return res.status(404).json({msg: "Tu correo ya no esta activo."})
+        if(userChecked.confirmed === "false" || !userChecked.confirmed) return res.status(404).json({msg: "Tu cuenta aún no está activada."})
         const passwordChecked = await bcrypt.compare(req.body.password, userChecked.password) // si existe email, verificamos si la contraseña es correcta
         if (passwordChecked) { //generamos token de ingreso
             const token = jwt.sign({
@@ -156,7 +163,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const userDeleted = await userModel.findByIdAndUpdate(req.params.id, {removedAt: new Date()})
+        const userDeleted = await userModel.findByIdAndUpdate(req.params.id, {removedAt: new Date(), confirmed: false})
         res.status(200).json({
             msg: "User removed successfully", 
             name: userDeleted.name, 
@@ -175,5 +182,6 @@ module.exports = {
     isHr,
     getUserId,
     updateUser,
-    deleteUser
+    deleteUser,
+    confirmUser
 }  

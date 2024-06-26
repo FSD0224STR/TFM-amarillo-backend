@@ -70,6 +70,10 @@ const userSchema = new Schema({
         ref: 'companyModel',
         required: true,
     },
+    confirmed: { 
+        type: Boolean, 
+        default: false 
+    },
     removedAt: Date
     }, {timestamps: true});
 

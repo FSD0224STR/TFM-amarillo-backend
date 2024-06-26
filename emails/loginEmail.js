@@ -1,5 +1,4 @@
-
-const loginEmail = `
+module.exports = (userEmail, userPassword, userID) => `
 
 <!DOCTYPE html>
 <html lang="es">
@@ -78,16 +77,16 @@ const loginEmail = `
             </ul>
             <div class="highlight-box">
                 <p class="highlight-text"><strong>Para iniciar sesión, utiliza los siguientes datos:</strong></p>
-                <p><strong>Usuario:</strong>Tu correo electrónico</p>
-                <p><strong>Contraseña:</strong>perro123</p>
+                <p><strong>Usuario:</strong> ${userEmail} </p>
+                <p><strong>Contraseña:</strong>${userPassword}</p>
             </div>
+            <p><strong>Haz click aquí para activar tu cuenta:</strong></p>
+            <a class="btn" href="https://tfm-amarillo-frontend.netlify.app/confirmregister/${userID}">¡Activar Cuenta!</a>
+
             <p>No olvides acceder a tu perfil y cambiar tu contraseña por una más segura.</p>
-            <a class="btn" href="https://tfm-amarillo-frontend.netlify.app/login">¡Entra ya!</a>
         </div>
     </div>
 </body>
 </html>
 
 `
-
-module.exports = loginEmail
