@@ -1,7 +1,6 @@
 const expenseModel = require('../models/expense.model')
 const transporter = require('../transporter')
 
-
 const emailSent = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,8 +48,9 @@ const addExpense = async (req, res) => {
 
 const updateExpense = async (req, res) => { 
     try {
+        const data = await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body})
         const email = {
-            from:"fsd24amarillo@gmail.com",
+            from: "fsd24amarillo@gmail.com",
             to: req.user.email,
             subject: "Confirmación de fecha de pago",
             //text: "Hemos recibido tu gasto",
@@ -63,8 +63,8 @@ const updateExpense = async (req, res) => {
                 console.log("Email sent: " + info.response);
             }
         })
-        await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body})
-        res.status(200).json({msg: "Expense updated"})
+        console.log("data: ", data)
+        res.status(200).json({msg: "Expense updated and approved"})
     } catch (error) {
         res.status(404).json({msg: "Expense not found"})
     }
