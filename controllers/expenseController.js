@@ -51,10 +51,10 @@ const updateExpense = async (req, res) => {
     try {
         const data = await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body}).populate({
             path: 'absenceId',
-            populate: {
-                path: 'employeeId'
-            }
-        })
+                populate: {
+                    path: 'employeeId'
+                }
+        });
         const email = {
             from: "fsd24amarillo@gmail.com",
             to: data.absenceId.employeeId.email,
