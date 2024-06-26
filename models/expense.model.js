@@ -7,10 +7,10 @@ const expenseSchema = new Schema({
         ref: 'absenceModel',
         required: true,
     },
-    expenseTitle: {
-        type: String,
-        required: true
-    },
+    // expenseTitle: {
+    //     type: String,
+    //     required: true
+    // },
     paymentMethod: {
         enum: ["Personal", "Business Card"],
         type: String,

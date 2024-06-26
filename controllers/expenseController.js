@@ -1,18 +1,7 @@
+const expenseEmail = require('../emails/expenseEmail')
 const expenseModel = require('../models/expense.model')
-const userModel = require('../models/user.model')
 const transporter = require('../transporter')
 
-const emailSent = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Esto es una prueba de envío correo de confirmación de fecha de pago en gastos</h1>
-</body>
-</html>`
 
 const getExpenses = async (req, res) => {
     const expenses = await expenseModel.find().populate({
@@ -51,16 +40,16 @@ const updateExpense = async (req, res) => {
     try {
         const data = await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body}).populate({
             path: 'absenceId',
-                populate: {
-                    path: 'employeeId'
-                }
+                populate: [
+                    {path: 'employeeId'},
+                    {path: "absenceCodeId"}
+                ]
         });
         const email = {
             from: "fsd24amarillo@gmail.com",
             to: data.absenceId.employeeId.email,
-            subject: "Confirmación de fecha de pago",
-            //text: "Hemos recibido tu gasto",
-            html: emailSent
+            subject: `Gasto aprobado ${data.absenceId.absenceCodeId.absenceName}`,
+            html: expenseEmail,
         };
         transporter.sendMail(email, function(error, info) {
             if (error) {
