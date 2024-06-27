@@ -54,12 +54,12 @@ const updateExpense = async (req, res) => {
         ))
         const expenseBreakdown = data.expenseCodeId.map((code, index) => ({
             index: index,
-            hospedajes: code.Hospedajes > 0 ? code.Hospedajes : null,
-            dietas: code.Dietas > 0 ? code.Dietas : null,
-            traslados: code.Traslados > 0 ? code.Traslados : null,
+            hospedajes: code.Hospedajes > 0 ? code.Hospedajes : 0,
+            dietas: code.Dietas > 0 ? code.Dietas : 0,
+            traslados: code.Traslados > 0 ? code.Traslados : 0,
         }));
         
-        console.log("expenseBreakdown", expenseBreakdown, "dietas", expenseBreakdown.Dietas)
+        console.log("expenseBreakdown0.dietas", expenseBreakdown[0].dietas)
 
         const expenseEmail = generateEmailTemplate(expenseName, paymentDate, expenseTotal, expenseBreakdown)
 
@@ -76,7 +76,6 @@ const updateExpense = async (req, res) => {
                 console.log("Email sent: " + info.response);
             }
         })
-        //console.log("data: ", data)
         res.status(200).json({msg: "Expense updated and approved"})
     } catch (error) {
         res.status(404).json({msg: "Expense not found"})

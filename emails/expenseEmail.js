@@ -29,7 +29,7 @@ module.exports = function generateEmailTemplate(expenseName, paymentDate, expens
         margin: auto
     }
     .header {
-        display: flex;
+        display: grid;
         justify-content: center;
     }
     .content {
@@ -38,8 +38,8 @@ module.exports = function generateEmailTemplate(expenseName, paymentDate, expens
     }
     .highlight-box {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 200px);
+        grid-template-rows: 80px 40px 80px;
         background-color: #2cb9902e;
         border: 3px solid #2cb990;
         border-radius: 10px;
@@ -77,10 +77,16 @@ module.exports = function generateEmailTemplate(expenseName, paymentDate, expens
             <p>Los siguientes gastos están aprobados por Recursos Humanos:</p>
             <div class="highlight-box">
                 <p><strong>Gasto: </strong>${expenseName}</p>
-                <p><strong>Fecha de pago:</strong>${paymentDate}</p>
-                <p><strong>Total:</strong>${expenseTotal}</p>
-                <p><strong>Desglose con el nombre solo:</strong>${expenseBreakdown}</p>
-                <p><strong>Desglose con .dietas:</strong>${expenseBreakdown.Dietas}</p>
+                <p><strong>Fecha de pago: </strong>${new Date(paymentDate).toISOString().split("T")[0]}</p>
+                <p><strong>Total: </strong>${expenseTotal} €</p>
+                <p><strong>Desglose: </strong></p>
+        <table>
+            <tr>
+                <td colspan="4"><strong>Traslados:</strong>${expenseBreakdown[0].traslados} €</td>
+                <td colspan="4"><strong>Hospedajes:</strong>${expenseBreakdown[0].hospedajes} €</td>
+                <td colspan="4"><strong>Dietas:</strong>${expenseBreakdown[0].dietas} €</td>
+            </tr>
+        </table>
             </div>
             <p>Cualquier consulta, no dudes en contactarnos.</p>
         </div>
