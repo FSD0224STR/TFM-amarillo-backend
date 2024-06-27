@@ -1,7 +1,6 @@
-const expenseEmail = require('../emails/expenseEmail')
 const expenseModel = require('../models/expense.model')
 const transporter = require('../transporter')
-
+const generateEmailTemplate = require('../emails/expenseEmail')
 
 const getExpenses = async (req, res) => {
     const expenses = await expenseModel.find().populate({
@@ -45,10 +44,29 @@ const updateExpense = async (req, res) => {
                     {path: "absenceCodeId"}
                 ]
         });
+        const expenseName = data.absenceId.absenceCodeId.absenceName;
+        const paymentDate = data.expensePayment
+        const expenseTotal = data.expenseCodeId.map((code, index) => (
+                    key={index},
+                    (code.Hospedajes > 0 ? code.Hospedajes : 0) +
+                    (code.Dietas > 0 ? code.Dietas : 0) +
+                    (code.Traslados > 0 ? code.Traslados : 0)
+        ))
+        const expenseBreakdown = data.expenseCodeId.map((code, index) => ({
+            index: index,
+            hospedajes: code.Hospedajes > 0 ? code.Hospedajes : null,
+            dietas: code.Dietas > 0 ? code.Dietas : null,
+            traslados: code.Traslados > 0 ? code.Traslados : null,
+        }));
+        
+        console.log("expenseBreakdown", expenseBreakdown, "dietas", expenseBreakdown.Dietas)
+
+        const expenseEmail = generateEmailTemplate(expenseName, paymentDate, expenseTotal, expenseBreakdown)
+
         const email = {
             from: "fsd24amarillo@gmail.com",
             to: data.absenceId.employeeId.email,
-            subject: `Gasto aprobado ${data.absenceId.absenceCodeId.absenceName}`,
+            subject: `Gasto aprobado: ${data.absenceId.absenceCodeId.absenceName}`,
             html: expenseEmail,
         };
         transporter.sendMail(email, function(error, info) {
@@ -58,7 +76,7 @@ const updateExpense = async (req, res) => {
                 console.log("Email sent: " + info.response);
             }
         })
-        console.log("data: ", data)
+        //console.log("data: ", data)
         res.status(200).json({msg: "Expense updated and approved"})
     } catch (error) {
         res.status(404).json({msg: "Expense not found"})
