@@ -37,7 +37,56 @@ const addExpense = async (req, res) => {
 
 const updateExpense = async (req, res) => { 
     try {
-        const data = await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body}).populate({
+        //const data = 
+        await expenseModel.findByIdAndUpdate(req.params.id, {expenseStatus: "Aprobado", ...req.body})
+        // .populate({
+        //     path: 'absenceId',
+        //         populate: [
+        //             {path: 'employeeId'},
+        //             {path: "absenceCodeId"}
+        //         ]
+        // });
+        // const expenseName = data.absenceId.absenceCodeId.absenceName;
+        // const paymentDate = data.expensePayment
+        // const expenseTotal = data.expenseCodeId.map((code, index) => (
+        //             key={index},
+        //             (code.Hospedajes > 0 ? code.Hospedajes : 0) +
+        //             (code.Dietas > 0 ? code.Dietas : 0) +
+        //             (code.Traslados > 0 ? code.Traslados : 0)
+        // ))
+        // const expenseBreakdown = data.expenseCodeId.map((code, index) => ({
+        //     index: index,
+        //     hospedajes: code.Hospedajes > 0 ? code.Hospedajes : 0,
+        //     dietas: code.Dietas > 0 ? code.Dietas : 0,
+        //     traslados: code.Traslados > 0 ? code.Traslados : 0,
+        // }));
+        
+        // console.log("expenseBreakdown0.dietas", expenseBreakdown[0].dietas)
+
+        // const expenseEmail = generateEmailTemplate(expenseName, paymentDate, expenseTotal, expenseBreakdown)
+
+        // const email = {
+        //     from: "fsd24amarillo@gmail.com",
+        //     to: data.absenceId.employeeId.email,
+        //     subject: `Gasto aprobado: ${data.absenceId.absenceCodeId.absenceName}`,
+        //     html: expenseEmail,
+        // };
+        // transporter.sendMail(email, function(error, info) {
+        //     if (error) {
+        //         console.log(error);
+        //     } else {
+        //         console.log("Email sent: " + info.response);
+        //     }
+        // })
+        res.status(200).json({msg: "Expense updated and approved"})
+    } catch (error) {
+        res.status(404).json({msg: "Expense not found"})
+    }
+}
+
+const emailExpense = async (req, res) => { 
+    try {
+        const data = await expenseModel.findById(req.params.id).populate({
             path: 'absenceId',
                 populate: [
                     {path: 'employeeId'},
@@ -58,8 +107,6 @@ const updateExpense = async (req, res) => {
             dietas: code.Dietas > 0 ? code.Dietas : 0,
             traslados: code.Traslados > 0 ? code.Traslados : 0,
         }));
-        
-        console.log("expenseBreakdown0.dietas", expenseBreakdown[0].dietas)
 
         const expenseEmail = generateEmailTemplate(expenseName, paymentDate, expenseTotal, expenseBreakdown)
 
@@ -76,7 +123,52 @@ const updateExpense = async (req, res) => {
                 console.log("Email sent: " + info.response);
             }
         })
-        res.status(200).json({msg: "Expense updated and approved"})
+        res.status(200).json({msg: "Expense found, and email sent"})
+    } catch (error) {
+        res.status(404).json({msg: "Expense not found"})
+    }
+}
+
+const emailExpenseApproved = async (req, res) => { 
+    try {
+        const data = await expenseModel.findById(req.params.id).populate({
+            path: 'absenceId',
+                populate: [
+                    {path: 'employeeId'},
+                    {path: "absenceCodeId"}
+                ]
+        });
+        const expenseApproveDate = Date();
+        const expenseName = data.absenceId.absenceCodeId.absenceName;
+        const expenseTotal = data.expenseCodeId.map((code, index) => (
+                    key={index},
+                    (code.Hospedajes > 0 ? code.Hospedajes : 0) +
+                    (code.Dietas > 0 ? code.Dietas : 0) +
+                    (code.Traslados > 0 ? code.Traslados : 0)
+        ))
+        const expenseBreakdown = data.expenseCodeId.map((code, index) => ({
+            index: index,
+            hospedajes: code.Hospedajes > 0 ? code.Hospedajes : 0,
+            dietas: code.Dietas > 0 ? code.Dietas : 0,
+            traslados: code.Traslados > 0 ? code.Traslados : 0,
+        }));
+
+        const expenseEmail = generateEmailTemplate(expenseApproveDate, expenseName, expenseTotal, expenseBreakdown)
+
+        const email = {
+            from: "fsd24amarillo@gmail.com",
+            to: data.absenceId.employeeId.email,
+            subject: `Gasto recibido: ${data.absenceId.absenceCodeId.absenceName}`,
+            html: expenseEmail,
+        };
+        transporter.sendMail(email, function(error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Email sent: " + info.response);
+            }
+        })
+        res.status(200).json({msg: "Expense found, and email sent"})
     } catch (error) {
         res.status(404).json({msg: "Expense not found"})
     }
@@ -96,5 +188,7 @@ module.exports = {
     getExpenseById, 
     addExpense,
     updateExpense,
-    deleteExpense
+    deleteExpense,
+    emailExpense,
+    emailExpenseApproved
 }  
