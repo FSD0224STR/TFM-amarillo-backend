@@ -31,6 +31,9 @@ const expenseSchema = new Schema({
     expensePayment: {
         type: Date,
     },
+    expenseProof: {
+        type: Array,
+    },
     removedAt: Date,
     },
     {timestamps: true}
