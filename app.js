@@ -1,9 +1,15 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-const port = process.env.PORT || 3000
-const app = express();
+const mongoose = require("mongoose")
+const http = require("http")
+const webSocket = require('./websocket/websocket')
 
+const app = express()
+const port = process.env.PORT || 3000
+const socketPort = process.env.SOCKET_PORT || 3333
+const socket = http.createServer(app);
+const io = webSocket(socket);
 
 app.use(cors(corsOptions));
 var corsOptions = { 
@@ -12,7 +18,7 @@ var corsOptions = {
 app.use(express.json());
 
 
-const mongoose = require("mongoose");
+
 const mongoDB = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@"+process.env.DB_SERVER + "/" + process.env.DB_NAME + "?retryWrites=true&w=majority";
 
 async function main() {
@@ -47,5 +53,9 @@ app.use('/upload', uploadRouter)
 const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
+
+socket.listen(process.env.SOCKET_PORT, () => {
+  console.log(`Socket listening on port ${socketPort}`)
+})
 
 module.exports = { app, server };
