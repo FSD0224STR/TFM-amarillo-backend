@@ -29,8 +29,9 @@ function webSocket(server) {
             }
         });
 
-        socket.on('msg', (msg) => {
-            io.emit('msg', msg);
+        socket.on('chatMessage', (msg) => {
+            io.emit('chatMessage', msg);
+            console.log(msg)
         });
 
         socket.on('status', (status) => {
