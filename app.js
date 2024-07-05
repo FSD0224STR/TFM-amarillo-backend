@@ -8,8 +8,8 @@ const webSocket = require('./websocket/websocket')
 const app = express()
 const port = process.env.PORT || 3000
 const socketPort = process.env.SOCKET_PORT || 3333
-const socket = http.createServer(app);
-const io = webSocket(socket);
+const server = http.createServer(app);
+const io = webSocket(server);
 
 app.use(cors(corsOptions));
 var corsOptions = { 
@@ -50,12 +50,12 @@ app.use('/absenceCodes', absenceCodeRouter)
 app.use('/upload', uploadRouter)
 // app.use('/requests', requestsRouter)
 
-const server = app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
-
+/*
 socket.listen(process.env.SOCKET_PORT, () => {
   console.log(`Socket listening on port ${socketPort}`)
 })
-
+*/
 module.exports = { app, server };
