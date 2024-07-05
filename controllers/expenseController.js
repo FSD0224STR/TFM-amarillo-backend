@@ -28,7 +28,10 @@ const getExpenseById = async (req, res) => {
 
 const addExpense = async (req, res) => {
     try {
-        const newExpense = await expenseModel.create({ ...req.body });
+        const newExpense = await expenseModel.create({
+            expenseStatus: "Pendiente",
+            ...req.body,
+        });
         console.log("Nuevos gasto: ", newExpense);
         res.status(201).json({ msg: "Expense created", newExpense });
     } catch (error) {
@@ -59,26 +62,21 @@ const emailExpense = async (req, res) => {
         });
         const expenseName = data.absenceId.absenceCodeId.absenceName;
         const paymentDate = data.expensePayment;
-        const expenseTotal = data.expenseCodeId.map(
-            (code, index) => (
-                (key = { index }),
-                (code.Hospedajes > 0 ? code.Hospedajes : 0) +
-                    (code.Dietas > 0 ? code.Dietas : 0) +
-                    (code.Traslados > 0 ? code.Traslados : 0)
-            )
-        );
-        const expenseBreakdown = data.expenseCodeId.map((code, index) => ({
-            index: index,
-            hospedajes: code.Hospedajes > 0 ? code.Hospedajes : 0,
-            dietas: code.Dietas > 0 ? code.Dietas : 0,
-            traslados: code.Traslados > 0 ? code.Traslados : 0,
-        }));
+        const expenseTotal =
+            (data.expenseFood ? data.expenseFood : 0) +
+            (data.expenseLodging ? data.expenseLodging : 0) +
+            (data.expenseTravel ? data.expenseTravel : 0);
+        const expenseFood = data.expenseFood;
+        const expenseLodging = data.expenseLodging;
+        const expenseTravel = data.expenseTravel;
 
         const expenseEmail = generateEmailTemplate(
             expenseName,
             paymentDate,
             expenseTotal,
-            expenseBreakdown
+            expenseFood,
+            expenseLodging,
+            expenseTravel
         );
 
         const email = {
@@ -113,26 +111,21 @@ const emailExpenseApproved = async (req, res) => {
             });
         const expenseApproveDate = Date();
         const expenseName = data.absenceId.absenceCodeId.absenceName;
-        const expenseTotal = data.expenseCodeId.map(
-            (code, index) => (
-                (key = { index }),
-                (code.Hospedajes > 0 ? code.Hospedajes : 0) +
-                    (code.Dietas > 0 ? code.Dietas : 0) +
-                    (code.Traslados > 0 ? code.Traslados : 0)
-            )
-        );
-        const expenseBreakdown = data.expenseCodeId.map((code, index) => ({
-            index: index,
-            hospedajes: code.Hospedajes > 0 ? code.Hospedajes : 0,
-            dietas: code.Dietas > 0 ? code.Dietas : 0,
-            traslados: code.Traslados > 0 ? code.Traslados : 0,
-        }));
+        const expenseTotal =
+            (data.expenseFood ? data.expenseFood : 0) +
+            (data.expenseLodging ? data.expenseLodging : 0) +
+            (data.expenseTravel ? data.expenseTravel : 0);
+        const expenseFood = data.expenseFood;
+        const expenseLodging = data.expenseLodging;
+        const expenseTravel = data.expenseTravel;
 
         const expenseApproveEmail = generateApprovalEmailTemplate(
             expenseApproveDate,
             expenseName,
             expenseTotal,
-            expenseBreakdown
+            expenseFood,
+            expenseLodging,
+            expenseTravel
         );
 
         const email = {

@@ -16,9 +16,14 @@ const expenseSchema = new Schema(
         creditCardEnd: {
             type: Number,
         },
-        expenseCodeId: {
-            type: Array,
-            required: true,
+        expenseFood: {
+            type: Number,
+        },
+        expenseLodging: {
+            type: Number,
+        },
+        expenseTravel: {
+            type: Number,
         },
         expenseStatus: {
             type: String,

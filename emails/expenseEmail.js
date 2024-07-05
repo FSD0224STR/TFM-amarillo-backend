@@ -3,7 +3,9 @@ module.exports = {
         expenseName,
         paymentDate,
         expenseTotal,
-        expenseBreakdown
+        expenseFood,
+        expenseLodging,
+        expenseTravel
     ) {
         return `
 <!DOCTYPE html>
@@ -90,15 +92,9 @@ module.exports = {
                 <p><strong>Desglose: </strong></p>
         <table>
             <tr>
-                <td colspan="4"><strong>Traslados:</strong>${
-                    expenseBreakdown[0].traslados
-                } €</td>
-                <td colspan="4"><strong>Hospedajes:</strong>${
-                    expenseBreakdown[0].hospedajes
-                } €</td>
-                <td colspan="4"><strong>Dietas:</strong>${
-                    expenseBreakdown[0].dietas
-                } €</td>
+                <td colspan="4"><strong>Traslados:</strong>${expenseTravel} €</td>
+                <td colspan="4"><strong>Hospedajes:</strong>${expenseLodging} €</td>
+                <td colspan="4"><strong>Dietas:</strong>${expenseFood} €</td>
             </tr>
         </table>
             </div>
@@ -114,7 +110,9 @@ module.exports = {
         expenseApproveDate,
         expenseName,
         expenseTotal,
-        expenseBreakdown
+        expenseFood,
+        expenseLodging,
+        expenseTravel
     ) {
         return `
 <!DOCTYPE html>
@@ -198,9 +196,9 @@ module.exports = {
                 <p><strong>Desglose: </strong></p>
         <table>
             <tr>
-                <td colspan="4"><strong>Traslados:</strong>${expenseBreakdown[0].traslados} €</td>
-                <td colspan="4"><strong>Hospedajes:</strong>${expenseBreakdown[0].hospedajes} €</td>
-                <td colspan="4"><strong>Dietas:</strong>${expenseBreakdown[0].dietas} €</td>
+                <td colspan="4"><strong>Traslados:</strong>${expenseTravel} €</td>
+                <td colspan="4"><strong>Hospedajes:</strong>${expenseLodging} €</td>
+                <td colspan="4"><strong>Dietas:</strong>${expenseFood} €</td>
             </tr>
         </table>
             </div>
