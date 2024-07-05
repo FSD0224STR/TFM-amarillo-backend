@@ -9,6 +9,7 @@ const getTasks = async (req, res) => {
         })
         
     console.log("Tasks found")
+    console.log(tasks)
     res.status(200).json(tasks)
 }
 
@@ -56,7 +57,8 @@ const addTask = async (req, res) => {
 
 const updateTask = async (req, res) => { 
     try {
-        await taskModel.findByIdAndUpdate(req.params.id, {...req.body})
+        const task = await taskModel.findByIdAndUpdate(req.params.id, {...req.body})
+        console.log(task)
         res.status(200).json({msg: "Task updated"})
     } catch (error) {
         res.status(404).json({msg: "Task not found"})

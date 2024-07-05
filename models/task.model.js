@@ -8,7 +8,7 @@ const taskSchema = new Schema({
         required: true,
     },
     taskStatus: {
-        enum: ["Pendiente", "En proceso", "Completado"],
+        enum: ["Pendiente", "Completado"],
         type: String,
         required: true
     },

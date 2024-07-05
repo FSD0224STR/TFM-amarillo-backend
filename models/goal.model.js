@@ -14,10 +14,15 @@ const goalSchema = new Schema({
     goalDescription: {
         type: String,
     },
+    goalStatus: {
+        type: String,
+        enum: ["Pendiente", "En proceso", "Completado"],
+        default: "Pendiente"
+    },
     removedAt: Date,
     },
     {timestamps: true}
 );
 const goalModel = mongoose.model("goalModel", goalSchema);
     
-module.exports = goalModel
+module.exports = goalModel;
