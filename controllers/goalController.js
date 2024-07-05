@@ -1,7 +1,10 @@
 const goalModel = require('../models/goal.model')
+const departmentModel = require('../models/department.model')
+const userModel = require('../models/user.model')
 
 const getGoals = async (req, res) => {
-    const goals = await goalModel.find({removedAt: {$eq: null}})
+    const goals = await goalModel.find({removedAt: {$eq: null}}).populate({
+        path: "employeeId"})
     console.log("Goals found")
     res.status(200).json(goals)
 }
@@ -26,6 +29,7 @@ const addGoal = async (req, res) => {
 }
 
 const updateGoal = async (req, res) => { 
+    console.log(req.body)
     try {
         await goalModel.findByIdAndUpdate(req.params.id, {...req.body})
         res.status(200).json({msg: "Goal updated"})
@@ -43,10 +47,39 @@ const deleteGoal = async (req, res) => {
     }
 }
 
+const addGoalForDepartment = async (req, res) => {
+    const { departmentId, goalName, goalDescription } = req.body;
+
+    try {
+        const department = await departmentModel.findById(departmentId);
+        if (!department) {
+            return res.status(404).json({ msg: "Department not found" });
+        }
+
+        const users = await userModel.find({ departmentId: departmentId, removedAt: { $eq: null } });
+        if (users.length === 0) {
+            return res.status(404).json({ msg: "No users found in the department" });
+        }
+
+        const goals = await Promise.all(users.map(user => 
+            goalModel.create({ 
+                employeeId: user._id, 
+                goalName, 
+                goalDescription 
+            })
+        ));
+
+        res.status(201).json({ msg: "Goals created for all department members", goals });
+    } catch (error) {
+        res.status(400).json({ msg: "Error creating goals", error: error.message });
+    }
+};
+
 module.exports = { 
     getGoals, 
     getGoalById, 
     addGoal,
     updateGoal,
-    deleteGoal
+    deleteGoal,
+    addGoalForDepartment
 }  
