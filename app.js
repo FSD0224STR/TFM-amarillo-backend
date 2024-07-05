@@ -53,9 +53,5 @@ app.use('/upload', uploadRouter)
 server.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
-/*
-socket.listen(process.env.SOCKET_PORT, () => {
-  console.log(`Socket listening on port ${socketPort}`)
-})
-*/
+
 module.exports = { app, server };
