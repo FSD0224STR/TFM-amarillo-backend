@@ -92,9 +92,15 @@ module.exports = {
                 <p><strong>Desglose: </strong></p>
         <table>
             <tr>
-                <td colspan="4"><strong>Traslados:</strong>${expenseTravel} €</td>
-                <td colspan="4"><strong>Hospedajes:</strong>${expenseLodging} €</td>
-                <td colspan="4"><strong>Dietas:</strong>${expenseFood} €</td>
+                <td colspan="4"><strong>Traslados:</strong>${
+                    expenseTravel ? expenseTravel : 0
+                } €</td>
+                <td colspan="4"><strong>Hospedajes:</strong>${
+                    expenseLodging ? expenseLodging : 0
+                } €</td>
+                <td colspan="4"><strong>Dietas:</strong>${
+                    expenseFood ? expenseFood : 0
+                } €</td>
             </tr>
         </table>
             </div>
@@ -196,9 +202,15 @@ module.exports = {
                 <p><strong>Desglose: </strong></p>
         <table>
             <tr>
-                <td colspan="4"><strong>Traslados:</strong>${expenseTravel} €</td>
-                <td colspan="4"><strong>Hospedajes:</strong>${expenseLodging} €</td>
-                <td colspan="4"><strong>Dietas:</strong>${expenseFood} €</td>
+                <td colspan="4"><strong>Traslados:</strong>${
+                    expenseTravel ? expenseTravel : 0
+                } €</td>
+                <td colspan="4"><strong>Hospedajes:</strong>${
+                    expenseLodging ? expenseLodging : 0
+                } €</td>
+                <td colspan="4"><strong>Dietas:</strong>${
+                    expenseFood ? expenseFood : 0
+                } €</td>
             </tr>
         </table>
             </div>
