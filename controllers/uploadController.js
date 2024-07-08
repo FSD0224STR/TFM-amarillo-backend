@@ -75,34 +75,40 @@ const uploadCompanyLogo = async (req, res) => {
 };
 
 const uploadExpensesProof = async (req, res) => {
-    if (!req.file) {
+    if (!req.files) {
         return res.status(400).send("There are no files attached");
     }
-    cloudinary.uploader.upload(req.file.path, async (result, error) => {
+    const urls = [];
+    for (const file of req.files) {
         try {
-            if (error) {
-                fs.unlinkSync(req.file.path);
-                return res.status(500).send(error);
-            }
-            const urlToUpdate = { expenseProof: result.url };
-            const data = await expenseModel.findByIdAndUpdate(req.params.id, {
-                ...urlToUpdate,
+            const result = await cloudinary.uploader.upload(file.path);
+            urls.push(result.url);
+            await expenseModel.findByIdAndUpdate(req.params.id, {
+                expenseProof: urls,
             });
-            if (!data) {
-                fs.unlinkSync(req.file.path);
-                return res.status(404).json({ msg: "Expense not found" });
-            }
-            fs.unlinkSync(req.file.path);
-            res.status(200).json({ msg: "Expense updated", url: result.url });
+            file.map((file) => fs.unlinkSync(file.path));
+            res.status(200).json({ msg: "Expenses updated!", data: urls });
         } catch (error) {
-            fs.unlinkSync(req.file.path);
             res.status(500).json({
                 msg: "Error uploading or updating expense proof",
                 error: error.message,
             });
         }
-    });
+    }
+    console.log("url son: ", urls);
 };
+
+// const deleteExpensesProof = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const image = await expenseModel.findById(id);
+//         if (!image) {
+//             return res.status(404).json({ msg: "Image not found" });
+//         }
+//         await cloudinary.uploader.destroy(image.public_id);
+//         await expenseModel.findByIdAndUpdate(id, {});
+//     } catch (error) {}
+// };
 
 module.exports = {
     uploadProfileImage,

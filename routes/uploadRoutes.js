@@ -29,5 +29,11 @@ uploadRouter.post(
     authenticatedToken,
     uploadExpensesProof
 );
+// uploadRouter.delete(
+//     "/expenses/:id?",
+//     upload.array("files", 10),
+//     authenticatedToken,
+//     uploadExpensesProof
+// );
 
 module.exports = { uploadRouter };

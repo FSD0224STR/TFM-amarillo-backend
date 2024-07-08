@@ -4,6 +4,13 @@ const {
     generateEmailTemplate,
     generateApprovalEmailTemplate,
 } = require("../emails/expenseEmail");
+const cloudinary = require("cloudinary");
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const getExpenses = async (req, res) => {
     const expenses = await expenseModel.find().populate({
@@ -28,8 +35,17 @@ const getExpenseById = async (req, res) => {
 
 const addExpense = async (req, res) => {
     try {
+        // const urls = [];
+        // for (const file of req.files) {
+        //     const result = await cloudinary.uploader.upload(file.path);
+        //     urls.push(result.url);
+        // }
+        // if (!req.files) {
+        //     return res.status(400).send("There is no file attached");
+        // }
         const newExpense = await expenseModel.create({
             expenseStatus: "Pendiente",
+            //expenseProof: urls,
             ...req.body,
         });
         console.log("Nuevos gasto: ", newExpense);

@@ -1,12 +1,17 @@
-const { Router } = require('express')
-const { getRequests, getRequestsId, updateRequests, deleteRequests } = require('../controllers/requestsController')
+const { Router } = require("express");
+const {
+    getRequests,
+    getRequestsId,
+    updateRequests,
+    deleteRequests,
+} = require("../controllers/requestsController");
+const { authenticatedToken } = require("../controllers/userController");
 
+const requestsRouter = Router();
 
-const requestsRouter = Router()
+requestsRouter.get("/", authenticatedToken, getRequests);
+requestsRouter.get("/:id?", authenticatedToken, getRequestsId);
+requestsRouter.put("/:id?", authenticatedToken, updateRequests);
+requestsRouter.delete("/:id?", authenticatedToken, deleteRequests);
 
-requestsRouter.get("/", getRequests)
-requestsRouter.get("/:id?", getRequestsId)
-requestsRouter.put("/:id?", updateRequests)
-requestsRouter.delete("/:id?", deleteRequests)
-
-module.exports = { requestsRouter }
+module.exports = { requestsRouter };
