@@ -25,7 +25,7 @@ uploadRouter.post(
 );
 uploadRouter.post(
     "/expenses/:id?",
-    upload.array("files", 10),
+    upload.single("file"),
     authenticatedToken,
     uploadExpensesProof
 );

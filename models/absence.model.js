@@ -26,11 +26,15 @@ const absenceSchema = new Schema({
     city: {
         type: String,
     },
-    removedAt: Date,
+    continent: {
+        enum: ["America", "Europa", "Africa", "Asia", "Oceania"],
+        type: String,
     },
-    {timestamps: true}
+    removedAt: Date,
+},
+    { timestamps: true }
 );
 
 const absenceModel = mongoose.model("absenceModel", absenceSchema);
-    
+
 module.exports = absenceModel

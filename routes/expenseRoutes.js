@@ -1,6 +1,8 @@
 const { Router } = require('express')
 const { addExpense, getExpenseById, getExpenses, updateExpense, deleteExpense, emailExpense, emailExpenseApproved } = require('../controllers/expenseController')
 const { authenticatedToken, isHr } = require('../controllers/userController')
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 const expenseRouter = Router()
 
@@ -13,3 +15,5 @@ expenseRouter.post("/", authenticatedToken, addExpense)
 expenseRouter.delete("/:id?", authenticatedToken, isHr, deleteExpense)
 
 module.exports = { expenseRouter }
+
+//upload.single("file")
