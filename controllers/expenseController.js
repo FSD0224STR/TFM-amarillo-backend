@@ -17,7 +17,6 @@ const getExpenses = async (req, res) => {
         path: "absenceId",
         populate: [
             { path: "employeeId", populate: { path: "departmentId" } },
-            { path: "absenceCodeId" },
         ],
     });
     console.log("Gastos obtenidos");
@@ -75,9 +74,9 @@ const emailExpense = async (req, res) => {
     try {
         const data = await expenseModel.findById(req.params.id).populate({
             path: "absenceId",
-            populate: [{ path: "employeeId" }, { path: "absenceCodeId" }],
+            populate: [{ path: "employeeId" }],
         });
-        const expenseName = data.absenceId.absenceCodeId.absenceName;
+        const expenseName = data.absenceId.absenceName;
         const paymentDate = data.expensePayment;
         const expenseTotal =
             (data.expenseFood ? data.expenseFood : 0) +
@@ -99,7 +98,7 @@ const emailExpense = async (req, res) => {
         const email = {
             from: "fsd24amarillo@gmail.com",
             to: data.absenceId.employeeId.email,
-            subject: `Gasto aprobado: ${data.absenceId.absenceCodeId.absenceName}`,
+            subject: `Gasto aprobado: ${data.absenceId.absenceName}`,
             html: expenseEmail,
         };
         transporter.sendMail(email, function (error, info) {
@@ -124,10 +123,10 @@ const emailExpenseApproved = async (req, res) => {
             })
             .populate({
                 path: "absenceId",
-                populate: [{ path: "employeeId" }, { path: "absenceCodeId" }],
+                populate: [{ path: "employeeId" }],
             });
         const expenseApproveDate = Date();
-        const expenseName = data.absenceId.absenceCodeId.absenceName;
+        const expenseName = data.absenceId.absenceName;
         const expenseTotal =
             (data.expenseFood ? data.expenseFood : 0) +
             (data.expenseLodging ? data.expenseLodging : 0) +
@@ -148,7 +147,7 @@ const emailExpenseApproved = async (req, res) => {
         const email = {
             from: "fsd24amarillo@gmail.com",
             to: data.absenceId.employeeId.email,
-            subject: `Gasto recibido: ${data.absenceId.absenceCodeId.absenceName}`,
+            subject: `Gasto recibido: ${data.absenceId.absenceName}`,
             html: expenseApproveEmail,
         };
         transporter.sendMail(email, function (error, info) {
