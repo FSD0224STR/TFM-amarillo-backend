@@ -34,7 +34,7 @@ const expenseSchema = new Schema(
             type: Date,
         },
         expenseProof: {
-            type: String,
+            type: Array,
         },
         removedAt: Date,
     },

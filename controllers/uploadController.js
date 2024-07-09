@@ -1,8 +1,5 @@
 const cloudinary = require("cloudinary");
-const jwt = require("jsonwebtoken");
 const fs = require("fs");
-
-const myTokenSecret = process.env.MYTOKENSECRET;
 
 const userModel = require("../models/user.model");
 const companyModel = require("../models/company.model");
@@ -75,28 +72,32 @@ const uploadCompanyLogo = async (req, res) => {
 };
 
 const uploadExpensesProof = async (req, res) => {
-    if (!req.files) {
+    if (!req.files || req.files.length === 0) {
         return res.status(400).send("There are no files attached");
     }
     const urls = [];
-    for (const file of req.files) {
-        try {
+    try {
+        for (const file of req.files) {
             const result = await cloudinary.uploader.upload(file.path);
             urls.push(result.url);
-            await expenseModel.findByIdAndUpdate(req.params.id, {
-                expenseProof: urls,
-            });
-            file.map((file) => fs.unlinkSync(file.path));
-            res.status(200).json({ msg: "Expenses updated!", data: urls });
-        } catch (error) {
-            res.status(500).json({
-                msg: "Error uploading or updating expense proof",
-                error: error.message,
-            });
+            fs.unlinkSync(file.path)
         }
+        const expense = await expenseModel.findByIdAndUpdate(req.params.id, {
+            expenseProof: urls,
+        }, { new: true });
+        if (!expense) {
+            return res.status(404).json({ msg: "Expense not found" });
+        }
+        res.status(200).json({ msg: "Expenses updated!", data: urls });
+    } catch (error) {
+        res.status(500).json({
+            msg: "Error uploading or updating expense proof",
+            error: error.message,
+        });
     }
-    console.log("url son: ", urls);
+    console.log("URLs son: ", urls);
 };
+
 
 // const deleteExpensesProof = async (req, res) => {
 //     try {
