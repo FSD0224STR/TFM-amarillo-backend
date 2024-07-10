@@ -3,7 +3,7 @@ const absenceModel = require("../models/absence.model");
 const getAbsences = async (req, res) => {
     const absences = await absenceModel
         .find({ removedAt: { $eq: null } })
-        .populate([{ path: "absenceCodeId" }, { path: "employeeId" }]);
+        .populate([{ path: "employeeId" }]);
     console.log("Ausencias encontradas");
     res.status(200).json(absences);
 };
