@@ -33,7 +33,7 @@ const absenceSchema = new Schema({
         required: true
     },
     absenceService: {
-        enum: ["Demo", "Venta", "Post-venta", "Soporte", "Formacion", "Feria", "Otros"],
+        enum: ["Demo", "Venta", "Post-Venta", "Soporte", "Formacion", "Feria", "Otros"],
         type: String,
         required: true
     },
