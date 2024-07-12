@@ -73,30 +73,34 @@ const uploadCompanyLogo = async (req, res) => {
 
 const uploadExpensesProof = async (req, res) => {
     if (!req.files || req.files.length === 0) {
-        return res.status(400).send("There are no files attached");
+        return res.status(400).send("No files were uploaded.");
     }
+
     const urls = [];
     try {
         for (const file of req.files) {
             const result = await cloudinary.uploader.upload(file.path);
-            urls.push(result.url);
-            fs.unlinkSync(file.path)
+            urls.push(result.secure_url);
+            fs.unlinkSync(file.path);
         }
         const expense = await expenseModel.findByIdAndUpdate(req.params.id, {
-            expenseProof: urls,
+            $push: { expenseProof: { $each: urls } }
         }, { new: true });
+
         if (!expense) {
             return res.status(404).json({ msg: "Expense not found" });
         }
-        res.status(200).json({ msg: "Expenses updated!", data: urls });
+
+        res.status(200).json({ msg: "Expense proof updated", data: urls });
     } catch (error) {
+        console.error("Error uploading or updating expense proof:", error);
         res.status(500).json({
             msg: "Error uploading or updating expense proof",
             error: error.message,
         });
     }
-    console.log("URLs son: ", urls);
 };
+
 
 
 // const deleteExpensesProof = async (req, res) => {

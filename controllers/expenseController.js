@@ -33,19 +33,9 @@ const getExpenseById = async (req, res) => {
 };
 
 const addExpense = async (req, res) => {
-    // console.log("file: ", req.file)
     try {
-        // const urls = [];
-        // for (const file of req.file) {
-        //     const result = await cloudinary.uploader.upload(file.path);
-        //     urls.push(result.url);
-        // }
-        // if (!req.file) {
-        //     return res.status(400).send("There is no file attached");
-        // }
         const newExpense = await expenseModel.create({
             expenseStatus: "Pendiente",
-            // expenseProof: urls,
             ...req.body,
         });
         console.log("Nuevos gasto: ", newExpense);
@@ -60,13 +50,13 @@ const addExpense = async (req, res) => {
 
 const updateExpense = async (req, res) => {
     try {
-        await expenseModel.findByIdAndUpdate(req.params.id, {
-            expenseStatus: "Aprobado",
+        const data = await expenseModel.findByIdAndUpdate(req.params.id, {
+         //   expenseStatus: "Aprobado",
             ...req.body,
         });
         res.status(200).json({ msg: "Expense updated and approved" });
     } catch (error) {
-        res.status(404).json({ msg: "Expense not found" });
+        res.status(404).json({ msg: "Expense not found", error });
     }
 };
 
