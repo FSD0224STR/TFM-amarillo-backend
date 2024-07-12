@@ -8,6 +8,6 @@ absenceRouter.get("/", authenticatedToken, getAbsences)
 absenceRouter.get("/:id?", authenticatedToken, getAbsenceById)
 absenceRouter.put("/:id?", authenticatedToken, updateAbsence)
 absenceRouter.post("/", authenticatedToken, addAbsence)
-absenceRouter.delete("/:id?", authenticatedToken, isHr, deleteAbsence)
+absenceRouter.delete("/:id?", authenticatedToken, deleteAbsence)
 
 module.exports = { absenceRouter }
