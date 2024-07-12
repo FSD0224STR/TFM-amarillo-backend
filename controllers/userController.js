@@ -10,19 +10,19 @@ const myTokenSecret = process.env.MYTOKENSECRET
 
 const getUsers = async (req, res) => {
     try {
-      const users = await userModel.find({ removedAt: { $eq: null } }).populate([
-        { path: "departmentId", select: '_id departmentName'},
-        { path: "companyId", select: '_id companyName' }
-      ])
-      const sanitizedUsers = users.map(user => {
-        const userObject = user.toObject()
-        delete userObject.password
-        return userObject
-      })
-      res.status(200).json(sanitizedUsers)
+        const users = await userModel.find({ removedAt: { $eq: null } }).populate([
+            { path: "departmentId", select: '_id departmentName'},
+            { path: "companyId", select: '_id companyName' }
+        ])
+        const sanitizedUsers = users.map(user => {
+            const userObject = user.toObject()
+            delete userObject.password
+            return userObject
+        })
+        res.status(200).json(sanitizedUsers)
     } catch (error) {
-      console.error("Error al obtener los usuarios:", error)
-      res.status(500).json({ message: "Error al obtener los usuarios" })
+        console.error("Error al obtener los usuarios:", error)
+        res.status(500).json({ message: "Error al obtener los usuarios" })
     }
 }
 
