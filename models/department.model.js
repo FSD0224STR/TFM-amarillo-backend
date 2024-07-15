@@ -6,6 +6,9 @@ const departmentSchema = new Schema({
         type: String,
         required: true
     },
+    departmentBudget: {
+        type: Number
+    },
     removedAt: Date,
     },
     {timestamps: true}
