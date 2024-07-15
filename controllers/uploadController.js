@@ -101,20 +101,6 @@ const uploadExpensesProof = async (req, res) => {
     }
 };
 
-
-
-// const deleteExpensesProof = async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const image = await expenseModel.findById(id);
-//         if (!image) {
-//             return res.status(404).json({ msg: "Image not found" });
-//         }
-//         await cloudinary.uploader.destroy(image.public_id);
-//         await expenseModel.findByIdAndUpdate(id, {});
-//     } catch (error) {}
-// };
-
 module.exports = {
     uploadProfileImage,
     uploadCompanyLogo,
