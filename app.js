@@ -36,8 +36,6 @@ const { goalRouter } = require("./routes/goalRoutes")
 const { departmentRouter } = require("./routes/departmentRoutes")
 const { companyRouter } = require("./routes/companyRoutes")
 const { uploadRouter } = require("./routes/uploadRoutes")
-// const { absenceCodeRouter } = require("./routes/absenceCodeRoutes")
-// const { requestsRouter } = require('./routes/requestsRouter');
 
 app.use('/users', userRouter)
 app.use('/absences', absenceRouter)
@@ -47,8 +45,6 @@ app.use('/goals', goalRouter)
 app.use('/departments', departmentRouter)
 app.use('/companies', companyRouter)
 app.use('/upload', uploadRouter)
-// app.use('/absenceCodes', absenceCodeRouter)
-// app.use('/requests', requestsRouter)
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
