@@ -101,8 +101,38 @@ const uploadExpensesProof = async (req, res) => {
     }
 };
 
+const deleteExpenseProof = async (req, res) => {
+    const { url } = req.body;
+
+    try {
+        const publicId = url.slice(-24, -4)
+
+        const result = await cloudinary.uploader.destroy(publicId);
+        console.log("Cloudinary delete result:", result);
+
+        const expense = await expenseModel.findByIdAndUpdate(
+            req.params.id,
+            { $pull: { expenseProof: url } },
+            { new: true }
+        );
+
+        if (!expense) {
+            return res.status(404).json({ msg: "Expense not found" });
+        }
+        res.status(200).json({ msg: "Expense proof deleted", data: expense });
+    } catch (error) {
+        console.error("Error deleting expense proof:", error);
+        res.status(500).json({
+            msg: "Error deleting expense proof",
+            error: error.message,
+        });
+    }
+};
+
+
 module.exports = {
     uploadProfileImage,
     uploadCompanyLogo,
     uploadExpensesProof,
+    deleteExpenseProof
 };

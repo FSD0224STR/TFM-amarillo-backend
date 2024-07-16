@@ -6,7 +6,7 @@ const departmentRouter = Router()
 
 departmentRouter.get("/", authenticatedToken, getDepartments)
 departmentRouter.get("/:id?", authenticatedToken, getDepartmentById)
-departmentRouter.put("/:id?", authenticatedToken, updateDepartment)
+departmentRouter.put("/:id?", authenticatedToken, isHr, updateDepartment)
 departmentRouter.post("/", authenticatedToken, isHr, addDepartment)
 departmentRouter.delete("/:id?", authenticatedToken, isHr, deleteDepartment)
 
