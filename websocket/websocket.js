@@ -9,21 +9,39 @@ function webSocket(server) {
     });
 
     const connectedUsers = {};
+    let isHRonline = false
+
+    const updateHRStatus = () => {
+        const wasHRonline = isHRonline;
+        isHRonline = Object.values(connectedUsers).some(user => user.isHR === "HR");
+        console.log(isHRonline)
+        if (isHRonline !== wasHRonline) {
+            io.emit('isHRconnected', isHRonline);
+            console.log(`HR online status changed: ${isHRonline}`);
+        }
+    };
 
     io.on('connection', (socket) => {
-        socket.on('userConnected', ({ userId }) => {
-            connectedUsers[userId] = { socketId: socket.id, connected: true };
-            console.log(`Usuario ${userId} se ha conectado.`);
-            io.emit('connectedUsers', Object.keys(connectedUsers));
-            console.log(Object.keys(connectedUsers));
+        socket.on('userConnected', ({ userId, isHR }) => {
+            connectedUsers[userId] = { socketId: socket.id, connected: true, isHR }
+            console.log(`Usuario ${userId} se ha conectado. Es ${isHR} `)
+
+            updateHRStatus()
+            io.emit('isHRconnected', isHRonline);
+
+            io.emit('connectedUsers', Object.keys(connectedUsers))
+            console.log(Object.keys(connectedUsers))
         });
 
         socket.on('disconnect', () => {
             for (const userId in connectedUsers) {
                 if (connectedUsers[userId].socketId === socket.id) {
-                    delete connectedUsers[userId];
-                    console.log(`Usuario ${userId} se ha desconectado.`);
-                    io.emit('connectedUsers', Object.keys(connectedUsers));
+                    delete connectedUsers[userId]
+                    console.log(`Usuario ${userId} se ha desconectado.`)
+
+                    updateHRStatus()
+
+                    io.emit('connectedUsers', Object.keys(connectedUsers))
                     break;
                 }
             }
