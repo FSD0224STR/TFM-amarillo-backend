@@ -12,7 +12,7 @@ expenseRouter.put("/:id?", authenticatedToken, updateExpense)
 expenseRouter.put("/:id?/sending", authenticatedToken, emailExpense)
 expenseRouter.put("/:id?/approving", authenticatedToken, emailExpenseApproved)
 expenseRouter.post("/", authenticatedToken, addExpense)
-expenseRouter.delete("/:id?", authenticatedToken, isHr, deleteExpense)
+expenseRouter.delete("/:id?", authenticatedToken, deleteExpense)
 
 module.exports = { expenseRouter }
 
