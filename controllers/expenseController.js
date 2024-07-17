@@ -51,7 +51,7 @@ const addExpense = async (req, res) => {
 const updateExpense = async (req, res) => {
     try {
         const data = await expenseModel.findByIdAndUpdate(req.params.id, {
-         //   expenseStatus: "Aprobado",
+            //   expenseStatus: "Aprobado",
             ...req.body,
         });
         res.status(200).json({ msg: "Expense updated and approved" });
@@ -62,10 +62,11 @@ const updateExpense = async (req, res) => {
 
 const emailExpense = async (req, res) => {
     try {
-        const data = await expenseModel.findById(req.params.id).populate({
-            path: "absenceId",
-            populate: [{ path: "employeeId" }],
-        });
+        const data = await expenseModel.findByIdAndUpdate(req.params.id, { expenseStatus: "Aprobado", })
+            .populate({
+                path: "absenceId",
+                populate: [{ path: "employeeId" }],
+            });
         const expenseName = data.absenceId.absenceName;
         const paymentDate = data.expensePayment;
         const expenseTotal =
