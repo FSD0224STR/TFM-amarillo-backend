@@ -29,14 +29,20 @@ const addGoal = async (req, res) => {
 }
 
 const updateGoal = async (req, res) => { 
-    console.log(req.body)
+    console.log(req.body);
     try {
-        await goalModel.findByIdAndUpdate(req.params.id, {...req.body})
-        res.status(200).json({msg: "Goal updated"})
+        const goal = await goalModel.findById(req.params.id);
+        if (!goal) {
+            return res.status(404).json({msg: "Goal not found"});
+        }
+
+        await goalModel.updateMany({ goalName: goal.goalName }, { ...req.body });
+
+        res.status(200).json({msg: "Goals updated"});
     } catch (error) {
-        res.status(404).json({msg: "Goal not found"})
+        res.status(500).json({msg: "An error occurred"});
     }
-}
+};
 
 const deleteGoal = async (req, res) => {
     try {
