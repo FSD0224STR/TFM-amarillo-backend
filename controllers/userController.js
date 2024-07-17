@@ -46,8 +46,8 @@ const getUserId = async (req, res) => {
 
 const addUser = async (req, res) => {
     try {
-      const { email } = req.body;
-      const userChecked = await userModel.findOne({ email })
+      const { emailUser } = req.body;
+      const userChecked = await userModel.findOne({ emailUser })
       const loginEmailwithData = loginEmail(userChecked.email, 'perro123', userChecked._id)
   
       if (userChecked && userChecked.removedAt) {
