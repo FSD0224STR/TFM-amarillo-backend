@@ -46,8 +46,9 @@ const getUserId = async (req, res) => {
 
 const addUser = async (req, res) => {
     try {
-      const { emailUser } = req.body;
-      const userChecked = await userModel.findOne({ emailUser })
+      const { email } = req.body;
+      console.log( req.body )
+      const userChecked = await userModel.findOne({ email })
       const loginEmailwithData = loginEmail(userChecked.email, 'perro123', userChecked._id)
   
       if (userChecked && userChecked.removedAt) {
@@ -94,6 +95,7 @@ const addUser = async (req, res) => {
       }
     } catch (error) {
       res.status(400).json({ msg: "You missed some parameter", error: error.message });
+      console.log(error)
     }
   }
   
