@@ -47,11 +47,11 @@ const getUserId = async (req, res) => {
 const addUser = async (req, res) => {
     try {
       const { email } = req.body;
-      console.log( req.body )
       const userChecked = await userModel.findOne({ email })
-      const loginEmailwithData = loginEmail(userChecked.email, 'perro123', userChecked._id)
-  
+      console.log(userChecked)
+
       if (userChecked && userChecked.removedAt) {
+        const loginEmailwithData = loginEmail(userChecked.email, 'perro123', userChecked._id)
         const updatedData = { ...req.body, removedAt: null };
         if (req.body.password) {
           updatedData.password = await bcrypt.hash(req.body.password, 10);
@@ -76,7 +76,9 @@ const addUser = async (req, res) => {
       } else {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         const newUser = await userModel.create({ ...req.body, password: hashedPassword });
- 
+
+        const loginEmailwithData = loginEmail(newUser.email, 'perro123', newUser._id)
+
         const email = {
           from: 'fsd24amarillo@gmail.com',
           to: newUser.email,
